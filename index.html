@@ -72,7 +72,7 @@ footer{border-top:1px solid var(--line);padding:27px 0;color:var(--muted);font-s
 </main>
 <footer><div class="wrap foot"><span>© <span id="year"></span> DIDICS. Feito para a comunidade por morais.</span><span>Não afiliado à Valve ou à Steam.</span></div></footer><div class="toast" id="toast">Copiado!</div>
 <script>
-const defaults={discord:"https://discord.gg/teu-servidor",tiktok:"tiktok:"https://www.tiktok.com/@dioguinho_0_0"",youtube:"https://www.youtube.com/@DidiCS2-M4",title:"Uma comunidade. Uma vibe.",sites:[["CSGOSKINS","DIDICS"],["SkinClub","DIDICS210"],["Site parceiro 3","CODIGO3"]]};
+const defaults={discord:"https://discord.gg/teu-servidor",tiktok:"https://www.tiktok.com/@dioguinho_0_0",youtube:"https://www.youtube.com/@DidiCS2-M4",title:"Uma comunidade. Uma vibe.",sites:[["CSGOSKINS","DIDICS"],["SkinClub","DIDICS210"],["Site parceiro 3","CODIGO3"]]};
 let settings={...defaults};
 function load(){try{const s=JSON.parse(localStorage.getItem("didicsSettings")||"null");if(s)settings={...defaults,...s,sites:s.sites||defaults.sites}}catch(e){};document.getElementById("discordLink").href=settings.discord;document.getElementById("tiktokLink").href=settings.tiktok;document.getElementById("youtubeLink").href=settings.youtube;document.getElementById("heroText").textContent=settings.title||defaults.title;renderCodes();fillEditor();drawWheel(getNames())}
 function renderCodes(){document.getElementById("codeCards").innerHTML=settings.sites.map((x,i)=>`<div class="codecard"><small>CRIADOR • ${i+1}</small><h3>${esc(x[0])}</h3><div class="codecopy"><code>${esc(x[1])}</code><button class="copy" onclick="copyCode('${esc(x[1]).replace(/'/g,"\'")}')">COPIAR</button></div></div>`).join("")}
