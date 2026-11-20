@@ -48,7 +48,7 @@ footer{border-top:1px solid var(--line);padding:27px 0;color:var(--muted);font-s
 <a class="social" id="tiktokLink" href="#" target="_blank" rel="noopener"><div class="socialicon"><svg viewBox="0 0 24 24"><path d="M19.6 7.2a6.8 6.8 0 0 1-4.2-1.5v8.1a6.1 6.1 0 1 1-5.3-6.1v3.2a2.9 2.9 0 1 0 2.1 2.8V2.5h3.2c.2 2.1 1.9 3.8 4.2 4v.7Z"/></svg></div><div><strong>TikTok</strong><small>Clips, momentos e novidades</small></div></a>
 <a class="social" id="youtubeLink" href="#" target="_blank" rel="noopener"><div class="socialicon"><svg viewBox="0 0 24 24"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8ZM9.6 15.6V8.4l6.3 3.6-6.3 3.6Z"/></svg></div><div><strong>YouTube</strong><small>Vídeos e conteúdo completo</small></div></a>
 </div></section>
-<section id="codigos"><div class="sectionhead"><div><div class="eyebrow">APOIA O MEU CONTEÚDO</div><h2>Os meus códigos</h2></div><p>Usa os códigos nos sites indicados. Obrigado pelo apoio!</p></div><div class="codes" id="codeCards"></div></section>
+<section id="codigos"><div class="sectionhead"><div><div class="eyebrow">APOIA O MEU CONTEÚDO</div><h2>Os meus códigos</h2></div><p>Usa os códigos nos sites indicados. Obrigado pelo teu apoio!</p></div><div class="codes" id="codeCards"></div></section>
 <section id="giveaway"><div class="sectionhead"><div><div class="eyebrow">BOA SORTE!</div><h2>Roleta de giveaways</h2></div><p>Adiciona os participantes e deixa a sorte decidir.</p></div>
 <div class="giveaway">
 <div class="wheelbox">
@@ -63,7 +63,7 @@ footer{border-top:1px solid var(--line);padding:27px 0;color:var(--muted);font-s
 </div>
 <div class="entrybox"><h3>Participantes</h3><p class="muted">Escreve um nome por linha. Podes colar uma lista inteira.</p><textarea class="field" id="names" placeholder="Jogador1&#10;Jogador2&#10;Jogador3"></textarea><div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><span class="muted" id="count">0 participantes</span><button class="btn ghost" onclick="clearNames()">Limpar lista</button></div></div></div>
 </section>
-<section id="skins"><div class="sectionhead"><div><div class="eyebrow">UM TOQUE DE CS2</div><h2>Universo de skins</h2></div><p>Um cantinho dedicado ao jogo — sem lojas nem negócios.</p></div>
+<section id="skins"><div class="sectionhead"><div><div class="eyebrow">GIVEWAYS ATIVOS</div><h2>TENTA A TUA SORTE</h2></div><p>Obriagdo pelo vosso apoio — para vocês.</p></div>
 <div class="skinrow">
 <div class="skin"><div class="skinvisual"><img src="https://community.cloudflare.steamstatic.com/economy/image/class/730/weapon_ak47" alt="AK-47 CS2" onerror="this.style.display='none'"></div><div class="skininfo"><strong>AK-47</strong><small>Counter-Strike 2</small></div></div>
 <div class="skin"><div class="skinvisual"><img src="https://community.cloudflare.steamstatic.com/economy/image/class/730/weapon_awp" alt="AWP CS2" onerror="this.style.display='none'"></div><div class="skininfo"><strong>AWP</strong><small>Counter-Strike 2</small></div></div>
@@ -72,7 +72,7 @@ footer{border-top:1px solid var(--line);padding:27px 0;color:var(--muted);font-s
 </main>
 <footer><div class="wrap foot"><span>© <span id="year"></span> DIDICS. Feito para a comunidade por morais.</span><span>Não afiliado à Valve ou à Steam.</span></div></footer><div class="toast" id="toast">Copiado!</div>
 <script>
-const defaults={discord:"https://discord.gg/teu-servidor",tiktok:"https://tiktok.com/@teu-perfil",youtube:"https://youtube.com/@teu-canal",title:"Uma comunidade. Uma vibe.",sites:[["Site parceiro 1","CODIGO1"],["Site parceiro 2","CODIGO2"],["Site parceiro 3","CODIGO3"]]};
+const defaults={discord:"https://discord.gg/teu-servidor",tiktok:"tiktok:"https://www.tiktok.com/@dioguinho_0_0"",youtube:"https://www.youtube.com/@DidiCS2-M4",title:"Uma comunidade. Uma vibe.",sites:[["CSGOSKINS","DIDICS"],["SkinClub","DIDICS210"],["Site parceiro 3","CODIGO3"]]};
 let settings={...defaults};
 function load(){try{const s=JSON.parse(localStorage.getItem("didicsSettings")||"null");if(s)settings={...defaults,...s,sites:s.sites||defaults.sites}}catch(e){};document.getElementById("discordLink").href=settings.discord;document.getElementById("tiktokLink").href=settings.tiktok;document.getElementById("youtubeLink").href=settings.youtube;document.getElementById("heroText").textContent=settings.title||defaults.title;renderCodes();fillEditor();drawWheel(getNames())}
 function renderCodes(){document.getElementById("codeCards").innerHTML=settings.sites.map((x,i)=>`<div class="codecard"><small>CRIADOR • ${i+1}</small><h3>${esc(x[0])}</h3><div class="codecopy"><code>${esc(x[1])}</code><button class="copy" onclick="copyCode('${esc(x[1]).replace(/'/g,"\'")}')">COPIAR</button></div></div>`).join("")}
