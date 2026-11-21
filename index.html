@@ -114,6 +114,8 @@ function drawWheel(list){
 }
 
 let audioCtx = null;
+let tickInterval = null;
+let currentOsc = null;
 
 function initAudio() {
   if (!audioCtx) {
@@ -124,70 +126,63 @@ function initAudio() {
   }
 }
 
-// Som natural de pino/palheta física
-function playTick() {
+// Som suave de fricção/pino enquanto roda
+function playSmoothTick() {
   try {
     initAudio();
     const now = audioCtx.currentTime;
     
-    // Oscilador para o corpo do estalido
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
     const filter = audioCtx.createBiquadFilter();
 
-    osc.type = 'triangle';
-    // Ligeira variação aleatória para não soar robótico
-    const randomPitch = 280 + (Math.random() * 40 - 20);
-    osc.frequency.setValueAtTime(randomPitch, now);
-    osc.frequency.exponentialRampToValueAtTime(65, now + 0.035);
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(180 + Math.random() * 40, now);
+    osc.frequency.exponentialRampToValueAtTime(80, now + 0.025);
 
-    // Filtro para tirar o som "metálico/robótico" e deixar mais abafado/orgânico
     filter.type = 'lowpass';
-    filter.frequency.setValueAtTime(1100, now);
+    filter.frequency.setValueAtTime(600, now);
 
-    // Envelope ultra-rápido (estalido seco)
     gain.gain.setValueAtTime(0.001, now);
-    gain.gain.linearRampToValueAtTime(0.28, now + 0.004);
-    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
+    gain.gain.linearRampToValueAtTime(0.08, now + 0.003);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.025);
 
     osc.connect(filter);
     filter.connect(gain);
     gain.connect(audioCtx.destination);
 
     osc.start(now);
-    osc.stop(now + 0.045);
+    osc.stop(now + 0.03);
   } catch (e) {}
 }
 
-// Som de vitória mais suave e moderno (acorde cintilante)
+// Som de vitória suave e elegante
 function playWin() {
   try {
     initAudio();
     const now = audioCtx.currentTime;
-    // Notas de um acorde maior agradável (Dó5, Mi5, Sol5, Si5, Dó6)
-    const notes = [523.25, 659.25, 783.99, 987.77, 1046.50];
+    const notes = [523.25, 659.25, 783.99, 1046.50]; // Acorde harmonioso
 
     notes.forEach((freq, i) => {
       const osc = audioCtx.createOscillator();
       const gain = audioCtx.createGain();
-      const startTime = now + i * 0.075;
+      const startTime = now + i * 0.08;
 
-      osc.type = 'sine';
+      osc.type = 'triangle';
       osc.frequency.setValueAtTime(freq, startTime);
 
       gain.gain.setValueAtTime(0.001, startTime);
-      gain.gain.linearRampToValueAtTime(0.18, startTime + 0.02);
-      gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.65);
+      gain.gain.linearRampToValueAtTime(0.12, startTime + 0.03);
+      gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.5);
 
       osc.connect(gain);
       gain.connect(audioCtx.destination);
 
       osc.start(startTime);
-      osc.stop(startTime + 0.7);
+      osc.stop(startTime + 0.55);
     });
   } catch (e) {}
 }
-
 function spinWheel(){
   const list=getNames();
   if(!list.length){notify("Adiciona pelo menos um participante.");return}
