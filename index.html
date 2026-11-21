@@ -113,9 +113,8 @@ function drawWheel(list){
   });
 }
 
+// --- SISTEMA DE ÁUDIO SUAVE PARA A ROLETA ---
 let audioCtx = null;
-let tickInterval = null;
-let currentOsc = null;
 
 function initAudio() {
   if (!audioCtx) {
@@ -126,8 +125,8 @@ function initAudio() {
   }
 }
 
-// Som suave de fricção/pino enquanto roda
-function playSmoothTick() {
+// Som suave de fricção/pino enquanto a roleta roda
+function playTick() {
   try {
     initAudio();
     const now = audioCtx.currentTime;
@@ -156,12 +155,12 @@ function playSmoothTick() {
   } catch (e) {}
 }
 
-// Som de vitória suave e elegante
+// Som de vitória suave e elegante quando a roleta para
 function playWin() {
   try {
     initAudio();
     const now = audioCtx.currentTime;
-    const notes = [523.25, 659.25, 783.99, 1046.50]; // Acorde harmonioso
+    const notes = [523.25, 659.25, 783.99, 1046.50];
 
     notes.forEach((freq, i) => {
       const osc = audioCtx.createOscillator();
@@ -183,6 +182,9 @@ function playWin() {
     });
   } catch (e) {}
 }
+
+// --- LÓGICA DE ROTAÇÃO DA ROLETA ---
+// (Certifica-te de que chamas 'playTick()' dentro do teu ciclo de animação/giro e 'playWin()' quando parar)
 function spinWheel(){
   const list=getNames();
   if(!list.length){notify("Adiciona pelo menos um participante.");return}
