@@ -114,43 +114,76 @@ function drawWheel(list){
 }
 
 let audioCtx = null;
+
 function initAudio() {
-  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  if (audioCtx.state === 'suspended') audioCtx.resume();
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+  if (audioCtx.state === 'suspended') {
+    audioCtx.resume();
+  }
 }
 
+// Som natural de pino/palheta física
 function playTick() {
   try {
     initAudio();
+    const now = audioCtx.currentTime;
+    
+    // Oscilador para o corpo do estalido
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
+    const filter = audioCtx.createBiquadFilter();
+
     osc.type = 'triangle';
-    osc.frequency.setValueAtTime(600, audioCtx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(150, audioCtx.currentTime + 0.04);
-    gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.04);
-    osc.connect(gain);
+    // Ligeira variação aleatória para não soar robótico
+    const randomPitch = 280 + (Math.random() * 40 - 20);
+    osc.frequency.setValueAtTime(randomPitch, now);
+    osc.frequency.exponentialRampToValueAtTime(65, now + 0.035);
+
+    // Filtro para tirar o som "metálico/robótico" e deixar mais abafado/orgânico
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(1100, now);
+
+    // Envelope ultra-rápido (estalido seco)
+    gain.gain.setValueAtTime(0.001, now);
+    gain.gain.linearRampToValueAtTime(0.28, now + 0.004);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
+
+    osc.connect(filter);
+    filter.connect(gain);
     gain.connect(audioCtx.destination);
-    osc.start();
-    osc.stop(audioCtx.currentTime + 0.04);
+
+    osc.start(now);
+    osc.stop(now + 0.045);
   } catch (e) {}
 }
 
+// Som de vitória mais suave e moderno (acorde cintilante)
 function playWin() {
   try {
     initAudio();
-    const notes = [523.25, 659.25, 783.99, 1046.50];
-    notes.forEach((freq, idx) => {
+    const now = audioCtx.currentTime;
+    // Notas de um acorde maior agradável (Dó5, Mi5, Sol5, Si5, Dó6)
+    const notes = [523.25, 659.25, 783.99, 987.77, 1046.50];
+
+    notes.forEach((freq, i) => {
       const osc = audioCtx.createOscillator();
       const gain = audioCtx.createGain();
+      const startTime = now + i * 0.075;
+
       osc.type = 'sine';
-      osc.frequency.setValueAtTime(freq, audioCtx.currentTime + idx * 0.1);
-      gain.gain.setValueAtTime(0.2, audioCtx.currentTime + idx * 0.1);
-      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + idx * 0.1 + 0.4);
+      osc.frequency.setValueAtTime(freq, startTime);
+
+      gain.gain.setValueAtTime(0.001, startTime);
+      gain.gain.linearRampToValueAtTime(0.18, startTime + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.65);
+
       osc.connect(gain);
       gain.connect(audioCtx.destination);
-      osc.start(audioCtx.currentTime + idx * 0.1);
-      osc.stop(audioCtx.currentTime + idx * 0.1 + 0.4);
+
+      osc.start(startTime);
+      osc.stop(startTime + 0.7);
     });
   } catch (e) {}
 }
