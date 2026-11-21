@@ -112,12 +112,59 @@ function drawWheel(list){
     ctx.restore();
   });
 }
+
+let audioCtx = null;
+function initAudio() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+}
+
+function playTick() {
+  try {
+    initAudio();
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(150, audioCtx.currentTime + 0.04);
+    gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.04);
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start();
+    osc.stop(audioCtx.currentTime + 0.04);
+  } catch (e) {}
+}
+
+function playWin() {
+  try {
+    initAudio();
+    const notes = [523.25, 659.25, 783.99, 1046.50];
+    notes.forEach((freq, idx) => {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, audioCtx.currentTime + idx * 0.1);
+      gain.gain.setValueAtTime(0.2, audioCtx.currentTime + idx * 0.1);
+      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + idx * 0.1 + 0.4);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start(audioCtx.currentTime + idx * 0.1);
+      osc.stop(audioCtx.currentTime + idx * 0.1 + 0.4);
+    });
+  } catch (e) {}
+}
+
 function spinWheel(){
   const list=getNames();
   if(!list.length){notify("Adiciona pelo menos um participante.");return}
+  initAudio();
   const b=document.getElementById("spinBtn");b.disabled=true;
   document.getElementById("winner").textContent="A escolher...";
   let startTime=null,dur=2600,startAngle=currentAngle,extraRot=(Math.PI*2)*5+Math.random()*(Math.PI*2);
+  let lastSliceIndex = -1;
+  const slice=(Math.PI*2)/list.length;
+
   function animate(time){
     if(!startTime)startTime=time;
     let progress=(time-startTime)/dur;
@@ -125,16 +172,25 @@ function spinWheel(){
     let ease=1-Math.pow(1-progress,3);
     currentAngle=startAngle+extraRot*ease;
     drawWheel(list);
+
+    let currentSlice = Math.floor(currentAngle / slice);
+    if(currentSlice !== lastSliceIndex){
+      playTick();
+      lastSliceIndex = currentSlice;
+    }
+
     if(progress<1){requestAnimationFrame(animate)}
     else{
-      const slice=(Math.PI*2)/list.length;
       let normalized=(Math.PI*2-(currentAngle%(Math.PI*2)))%(Math.PI*2);
       let winIndex=Math.floor(normalized/slice)%list.length;
       document.getElementById("winner").textContent="🏆 "+list[winIndex];
+      playWin();
       b.disabled=false;
     }
   }
   requestAnimationFrame(animate);
 }
-document.getElementById("year").textContent=new Date().getFullYear();load();
-</script></body></html>
+
+document.getElementById("year").textContent=new Date().getFullYear();
+load();
+</script>
