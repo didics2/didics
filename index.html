@@ -181,8 +181,9 @@ function spinWheel(){
 
     if(progress<1){requestAnimationFrame(animate)}
     else{
-      let normalized=(Math.PI*2-(currentAngle%(Math.PI*2)))%(Math.PI*2);
-      let winIndex=Math.floor(normalized/slice)%list.length;
+      const slice=(Math.PI*2)/list.length;
+      let effectiveAngle = (1.5 * Math.PI - (currentAngle % (Math.PI * 2)) + 2 * Math.PI) % (2 * Math.PI);
+      let winIndex = Math.floor(effectiveAngle / slice) % list.length;
       document.getElementById("winner").textContent="🏆 "+list[winIndex];
       playWin();
       b.disabled=false;
