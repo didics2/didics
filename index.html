@@ -61,7 +61,23 @@ footer{border-top:1px solid var(--line);padding:27px 0;color:var(--muted);font-s
   <div class="winner" id="winner">O vencedor aparece aqui</div>
   <button class="btn" style="width:100%" id="spinBtn" onclick="spinWheel()">Girar roleta</button>
 </div>
-<div class="entrybox"><h3>Participantes</h3><p class="muted">Escreve um nome por linha. Podes colar uma lista inteira.</p><textarea class="field" id="names" placeholder="Jogador1&#10;Jogador2&#10;Jogador3"></textarea><div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><span class="muted" id="count">0 participantes</span><button class="btn ghost" onclick="clearNames()">Limpar lista</button></div></div></div>
+<div class="entrybox">
+  <h3>Participantes</h3>
+  <p class="muted">Escreve um nome por linha. Podes colar uma lista inteira.</p>
+  <textarea class="field" id="names" placeholder="Jogador1&#10;Jogador2&#10;Jogador3"></textarea>
+  
+  <!-- Opção para remover o vencedor automaticamente -->
+  <div style="margin: 12px 0; display: flex; align-items: center; gap: 8px;">
+    <input type="checkbox" id="removeWinner" style="accent-color: var(--orange2); width: 16px; height: 16px; cursor: pointer;">
+    <label for="removeWinner" class="muted" style="cursor: pointer; font-size: 13px;">Remover vencedor da lista automaticamente</label>
+  </div>
+
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
+    <span class="muted" id="count">0 participantes</span>
+    <button class="btn ghost" onclick="clearNames()">Limpar lista</button>
+  </div>
+</div>
+</div>
 </section>
 <section id="skins"><div class="sectionhead"><div><div class="eyebrow">GIVEWAYS ATIVOS</div><h2>TENTA A TUA SORTE</h2></div><p>Obriagdo pelo vosso apoio — para vocês.</p></div>
 <div class="skinrow">
@@ -85,7 +101,6 @@ function copyCode(t){navigator.clipboard?.writeText(t).then(()=>notify("Código 
 
 const names=document.getElementById("names");
 function getNames(){return names.value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean)}
-names.name || names.addEventListener("input",()=>{const n=getNames();document.getElementById("count").textContent=n.length+" participantes";drawWheel(n)});
 names.addEventListener("input",()=>{const n=getNames();document.getElementById("count").textContent=n.length+" participantes";drawWheel(n)});
 function clearNames(){names.value="";document.getElementById("count").textContent="0 participantes";document.getElementById("winner").textContent="O vencedor aparece aqui";drawWheel([])}
 
@@ -125,12 +140,10 @@ function initAudio() {
   }
 }
 
-// Som suave de fricção/pino enquanto a roleta roda
 function playTick() {
   try {
     initAudio();
     const now = audioCtx.currentTime;
-    
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
     const filter = audioCtx.createBiquadFilter();
@@ -155,7 +168,6 @@ function playTick() {
   } catch (e) {}
 }
 
-// Som de vitória suave e elegante quando a roleta para
 function playWin() {
   try {
     initAudio();
@@ -184,7 +196,6 @@ function playWin() {
 }
 
 // --- LÓGICA DE ROTAÇÃO DA ROLETA ---
-// (Certifica-te de que chamas 'playTick()' dentro do teu ciclo de animação/giro e 'playWin()' quando parar)
 function spinWheel(){
   const list=getNames();
   if(!list.length){notify("Adiciona pelo menos um participante.");return}
@@ -192,8 +203,8 @@ function spinWheel(){
   const b=document.getElementById("spinBtn");b.disabled=true;
   document.getElementById("winner").textContent="A escolher...";
   
-  // Aumentámos a duração de 2600 para 5000 (5 segundos) para ficar mais lenta
-  let startTime=null, dur=5000, startAngle=currentAngle, extraRot=(Math.PI*2)*4+Math.random()*(Math.PI*2);
+  // Duração de 7000ms (7 segundos) para uma rotação bem lenta e com suspense
+  let startTime=null, dur=7000, startAngle=currentAngle, extraRot=(Math.PI*2)*5+Math.random()*(Math.PI*2);
   let lastSliceIndex = -1;
   const slice=(Math.PI*2)/list.length;
 
@@ -216,9 +227,18 @@ function spinWheel(){
       const slice=(Math.PI*2)/list.length;
       let effectiveAngle = (1.5 * Math.PI - (currentAngle % (Math.PI * 2)) + 2 * Math.PI) % (2 * Math.PI);
       let winIndex = Math.floor(effectiveAngle / slice) % list.length;
-      document.getElementById("winner").textContent="🏆 "+list[winIndex];
+      let winnerName = list[winIndex];
+      
+      document.getElementById("winner").textContent="🏆 "+winnerName;
       playWin();
       b.disabled=false;
+
+      // Se a opção de remover o vencedor estiver ativa
+      if(document.getElementById("removeWinner").checked){
+        let updatedList = list.filter(name => name !== winnerName);
+        names.value = updatedList.join("\n");
+        document.getElementById("count").textContent = updatedList.length + " participantes";
+      }
     }
   }
   requestAnimationFrame(animate);
