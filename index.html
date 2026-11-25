@@ -7,10 +7,25 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0b0a0f;--panel:#14121a;--panel2:#1c1824;--line:#2d263b;--orange:#b83ec8;--orange2:#e05dd0;--cream:#f3eee7;--muted:#b0a4be;--pink:#ff66cc}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 80% 0%,#2d1138 0,transparent 35%),var(--bg);color:var(--cream);font-family:'DM Sans',sans-serif}a{color:inherit;text-decoration:none}button,input,textarea{font:inherit}.wrap{width:min(1120px,92%);margin:auto}
-#snowCanvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1}
+:root{--bg:#0b0a0f;--panel:#14121aEE;--panel2:#1c1824;--line:#4a2b5e;--orange:#b83ec8;--orange2:#e05dd0;--cream:#f3eee7;--muted:#d0b8e2;--pink:#ff66cc}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{
+  margin:0;
+  /* Fundo inspirado na imagem enviada: tons roxos, rosados e estilo oriental/atmosférico */
+  background: 
+    linear-gradient(180deg, rgba(11, 10, 15, 0.5) 0%, rgba(20, 12, 30, 0.85) 70%, #0b0a0f 100%),
+    radial-gradient(circle at 50% 20%, rgba(184, 62, 200, 0.25) 0%, transparent 60%),
+    radial-gradient(circle at 20% 80%, rgba(255, 102, 204, 0.15) 0%, transparent 50%),
+    #0b0a0f;
+  background-attachment: fixed;
+  color:var(--cream);
+  font-family:'DM Sans',sans-serif;
+}
+a{color:inherit;text-decoration:none}button,input,textarea{font:inherit}.wrap{width:min(1120px,92%);margin:auto}
+
+#petalsCanvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1}
 header,main,footer{position:relative;z-index:2}
+
 header{height:76px;border-bottom:1px solid #ffffff12;display:flex;align-items:center;position:sticky;top:0;background:#0b0a0feF;backdrop-filter:blur(14px);z-index:5}.nav{display:flex;align-items:center;justify-content:space-between;gap:20px}.logo{font:700 25px 'Space Grotesk';letter-spacing:2px}.logo span{color:var(--orange2)}.links{display:flex;gap:26px;color:#c9c2b8;font-size:13px}.links a:hover{color:var(--orange2)}.navright{display:flex;align-items:center;gap:10px}.pill{border:1px solid var(--line);border-radius:99px;padding:10px 15px;color:var(--muted);font-size:12px;background:#ffffff05}.btn{border:0;border-radius:9px;padding:12px 17px;background:var(--orange);color:#fff;font-weight:800;cursor:pointer;transition:.2s}.btn:hover{background:var(--orange2);transform:translateY(-1px)}.btn.ghost{background:#ffffff08;border:1px solid var(--line);color:var(--cream)}.hero{padding:86px 0 65px;display:grid;grid-template-columns:1.1fr .9fr;gap:55px;align-items:center}.eyebrow{color:var(--pink);font-size:11px;letter-spacing:2.5px;font-weight:800;text-transform:uppercase}.hero h1{font:700 clamp(42px,6vw,72px)/1.02 'Space Grotesk';letter-spacing:-2.8px;margin:18px 0}.hero h1 em{color:var(--orange2);font-style:normal}.hero p{color:var(--muted);line-height:1.8;max-width:510px;font-size:15px}.heroactions{display:flex;gap:12px;margin-top:27px;flex-wrap:wrap}.hero-art{height:340px;border:1px solid #b83ec855;border-radius:22px;background:linear-gradient(145deg,#2a1536,#15111c 55%,#0b0a0f);position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;padding:24px}.hero-art img{width:195px;height:195px;object-fit:contain;filter:drop-shadow(0 15px 25px rgba(0,0,0,0.7));z-index:1}
 section{padding:54px 0}.sectionhead{display:flex;justify-content:space-between;align-items:end;gap:20px;margin-bottom:24px}.sectionhead h2{font:700 30px 'Space Grotesk';margin:8px 0 0}.sectionhead p{color:var(--muted);font-size:13px;margin:0}.socialgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.social{padding:22px;border:1px solid var(--line);border-radius:15px;background:linear-gradient(145deg,#171420,#121017);display:flex;align-items:center;gap:16px;transition:.2s}.social:hover{border-color:var(--orange2);transform:translateY(-3px)}.socialicon{width:48px;height:48px;border-radius:13px;background:#b83ec81c;color:var(--orange2);display:grid;place-items:center}.socialicon svg{width:23px;height:23px;fill:currentColor}.social strong{display:block;font-size:15px}.social small{display:block;color:var(--muted);margin-top:4px;font-size:12px}
 .codes{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.codecard{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px}.codecard small{color:var(--pink);text-transform:uppercase;letter-spacing:1.5px;font-size:10px;font-weight:800}.codecard h3{margin:9px 0 17px;font:600 19px 'Space Grotesk'}.codecopy{display:flex;align-items:center;justify-content:space-between;gap:10px;background:#0b0a0f;border:1px dashed #5a386d;border-radius:9px;padding:12px}.codecopy code{font-size:14px;color:#f7a8ed;letter-spacing:1px}.copy{border:0;background:#311b3e;color:#f7a8ed;border-radius:7px;padding:8px 10px;cursor:pointer;font-size:11px;font-weight:700}
@@ -25,7 +40,7 @@ footer{border-top:1px solid var(--line);padding:27px 0;color:var(--muted);font-s
 @media(max-width:760px){.links{display:none}.hero{grid-template-columns:1fr;padding-top:55px}.hero-art{height:240px}.socialgrid,.codes,.giveaway,.skinrow{grid-template-columns:1fr}.sectionhead{align-items:start;flex-direction:column}.editgrid{grid-template-columns:1fr}}
 </style></head>
 <body>
-<canvas id="snowCanvas"></canvas>
+<canvas id="petalsCanvas"></canvas>
 <header><div class="wrap nav"><a class="logo" href="#">DIDI<span>CS</span></a><nav class="links"><a href="#redes">Redes</a><a href="#codigos">Códigos</a><a href="#giveaway">Giveaways</a><a href="#skins">CS2</a></nav><div class="navright"><span class="pill">COMUNIDADE</span></div></div></header>
 <main class="wrap">
 <div id="editor">
@@ -90,55 +105,62 @@ footer{border-top:1px solid var(--line);padding:27px 0;color:var(--muted);font-s
 </main>
 <footer><div class="wrap foot"><span>© <span id="year"></span> DIDICS. Feito para a comunidade por morais.</span><span>Não afiliado à Valve ou à Steam.</span></div></footer><div class="toast" id="toast">Copiado!</div>
 <script>
-// --- NEVE SUAVE E DISCRETA ---
-const snowCanvas = document.getElementById("snowCanvas");
-const snowCtx = snowCanvas.getContext("2d");
-let flakes = [];
+// --- ANIMAÇÃO DE PÉTALAS A CAIR (INSPIRADO NA IMAGEM) ---
+const canvasPetals = document.getElementById("petalsCanvas");
+const ctxP = canvasPetals.getContext("2d");
+let petals = [];
 
-function resizeSnow() {
-  snowCanvas.width = window.innerWidth;
-  snowCanvas.height = window.innerHeight;
+function resizePetals() {
+  canvasPetals.width = window.innerWidth;
+  canvasPetals.height = window.innerHeight;
 }
-window.addEventListener("resize", resizeSnow);
-resizeSnow();
+window.addEventListener("resize", resizePetals);
+resizePetals();
 
-function initSnow() {
-  flakes = [];
-  const count = Math.min(45, Math.floor(window.innerWidth / 25));
+function initPetals() {
+  petals = [];
+  const count = Math.min(30, Math.floor(window.innerWidth / 35));
   for (let i = 0; i < count; i++) {
-    flakes.push({
-      x: Math.random() * snowCanvas.width,
-      y: Math.random() * snowCanvas.height,
-      r: Math.random() * 2 + 1,
-      speedY: Math.random() * 0.6 + 0.3,
-      speedX: (Math.random() - 0.5) * 0.4,
-      opacity: Math.random() * 0.4 + 0.15
+    petals.push({
+      x: Math.random() * canvasPetals.width,
+      y: Math.random() * canvasPetals.height,
+      size: Math.random() * 6 + 4,
+      speedY: Math.random() * 0.7 + 0.3,
+      speedX: (Math.random() - 0.5) * 0.8,
+      rotation: Math.random() * 360,
+      rotSpeed: (Math.random() - 0.5) * 2,
+      opacity: Math.random() * 0.5 + 0.3
     });
   }
 }
 
-function drawSnow() {
-  snowCtx.clearRect(0, 0, snowCanvas.width, snowCanvas.height);
-  flakes.forEach(f => {
-    snowCtx.beginPath();
-    snowCtx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
-    snowCtx.fillStyle = `rgba(243, 238, 231, ${f.opacity})`;
-    snowCtx.fill();
+function drawPetals() {
+  ctxP.clearRect(0, 0, canvasPetals.width, canvasPetals.height);
+  petals.forEach(p => {
+    ctxP.save();
+    ctxP.translate(p.x, p.y);
+    ctxP.rotate((p.rotation * Math.PI) / 180);
+    ctxP.beginPath();
+    ctxP.ellipse(0, 0, p.size, p.size / 2, 0, 0, Math.PI * 2);
+    ctxP.fillStyle = `rgba(255, 150, 210, ${p.opacity})`;
+    ctxP.fill();
+    ctxP.restore();
 
-    f.y += f.speedY;
-    f.x += f.speedX;
+    p.y += p.speedY;
+    p.x += p.speedX + Math.sin(p.y / 40) * 0.3;
+    p.rotation += p.rotSpeed;
 
-    if (f.y > snowCanvas.height) {
-      f.y = -5;
-      f.x = Math.random() * snowCanvas.width;
+    if (p.y > canvasPetals.height + 10) {
+      p.y = -10;
+      p.x = Math.random() * canvasPetals.width;
     }
-    if (f.x > snowCanvas.width) f.x = 0;
-    if (f.x < 0) f.x = snowCanvas.width;
+    if (p.x > canvasPetals.width + 10) p.x = -10;
+    if (p.x < -10) p.x = canvasPetals.width + 10;
   });
-  requestAnimationFrame(drawSnow);
+  requestAnimationFrame(drawPetals);
 }
-initSnow();
-drawSnow();
+initPetals();
+drawPetals();
 
 // --- CONFIGURAÇÕES E SITE ---
 const defaults={discord:"https://discord.gg/MF6FjUkbTQ",tiktok:"https://www.tiktok.com/@dioguinho_0_0",youtube:"https://www.youtube.com/@DidiCS2-M4",title:"Uma comunidade. Uma vibe.",sites:[["CSGOSKINS","DIDICS"],["SkinClub","DIDICS210"],["Site parceiro 3","CODIGO3"]]};
