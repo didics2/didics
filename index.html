@@ -120,30 +120,13 @@ footer{border-top:1px solid var(--line);padding:27px 0;color:var(--muted);font-s
 </main>
 <footer><div class="wrap foot"><span>© <span id="year"></span> DIDICS. Feito para a comunidade por morais.</span><span>Não afiliado à Valve ou à Steam.</span></div></footer><div class="toast" id="toast">Copiado!</div>
 <script>
-// --- AMBIENTE CS2 COM SKINS REAIS DA STEAM A FLUTUAR NO FUNDO ---
+// --- AMBIENTE CS2 COM ARMAS E FACAS DO CS2 EM VETOR ROXO NEON A FLUTUAR ---
 const cs2Canvas = document.getElementById("cs2Canvas");
 const ctxCS = cs2Canvas.getContext("2d");
 let smokes = [];
 let embers = [];
 let crosshairs = [];
-let floatingItems = [];
-
-// Links diretos das imagens oficiais de skins do CS2 na CDN da Steam
-const skinUrls = [
-  "https://community.cloudflare.steamstatic.com/economy/image/class/730/weapon_awp",
-  "https://community.cloudflare.steamstatic.com/economy/image/class/730/weapon_ak47",
-  "https://community.cloudflare.steamstatic.com/economy/image/class/730/weapon_m4a1",
-  "https://community.cloudflare.steamstatic.com/economy/image/class/730/weapon_deagle",
-  "https://community.cloudflare.steamstatic.com/economy/image/class/730/weapon_knife_karambit"
-];
-
-// Carregar imagens para objetos Image do JavaScript
-const loadedImages = skinUrls.map(url => {
-  const img = new Image();
-  img.crossOrigin = "anonymous";
-  img.src = url;
-  return img;
-});
+let floatingWeapons = [];
 
 function resizeCS2() {
   cs2Canvas.width = window.innerWidth;
@@ -156,7 +139,7 @@ function initCS2Bg() {
   smokes = [];
   embers = [];
   crosshairs = [];
-  floatingItems = [];
+  floatingWeapons = [];
 
   // Nuvens de fumo volumétrico
   for (let i = 0; i < 6; i++) {
@@ -196,21 +179,72 @@ function initCS2Bg() {
     });
   }
 
-  // Skins reais flutuantes
-  const itemCount = Math.min(5, Math.max(3, Math.floor(window.innerWidth / 250)));
-  for (let i = 0; i < itemCount; i++) {
-    floatingItems.push({
+  // Armas / facas icônicas do CS2 (AK, AWP, Karambit, M4, Desert Eagle)
+  const types = ['ak', 'awp', 'karambit', 'm4', 'deagle'];
+  const count = Math.min(6, Math.max(4, Math.floor(window.innerWidth / 220)));
+  for (let i = 0; i < count; i++) {
+    floatingWeapons.push({
       x: Math.random() * cs2Canvas.width,
       y: Math.random() * cs2Canvas.height,
-      imgIndex: Math.floor(Math.random() * loadedImages.length),
-      size: Math.random() * 60 + 130, // Tamanho da arma
-      speedY: (Math.random() - 0.5) * 0.2 - 0.1,
+      type: types[Math.floor(Math.random() * types.length)],
+      scale: Math.random() * 0.4 + 0.8,
+      speedY: (Math.random() - 0.5) * 0.2 - 0.08,
       speedX: (Math.random() - 0.5) * 0.2,
-      angle: (Math.random() - 0.5) * 0.5,
-      rotSpeed: (Math.random() - 0.5) * 0.002,
-      opacity: Math.random() * 0.22 + 0.12
+      angle: Math.random() * Math.PI * 2,
+      rotSpeed: (Math.random() - 0.5) * 0.003,
+      opacity: Math.random() * 0.18 + 0.1
     });
   }
+}
+
+// Desenho detalhado e perfeito das armas e facas do CS2 em vetor
+function drawWeapon(ctx, type, opacity) {
+  ctx.save();
+  ctx.strokeStyle = `rgba(255, 102, 204, ${opacity * 1.4})`;
+  ctx.fillStyle = `rgba(184, 62, 200, ${opacity * 0.85})`;
+  ctx.lineWidth = 2;
+  ctx.shadowBlur = 15;
+  ctx.shadowColor = "#ff66cc";
+
+  ctx.beginPath();
+  if (type === 'ak') {
+    // AK-47 Silhouette
+    ctx.rect(-60, -10, 100, 16);
+    ctx.rect(-15, -25, 30, 15);
+    ctx.rect(38, -6, 25, 12);
+    ctx.rect(-45, 6, 14, 30);
+    ctx.rect(-30, 10, 12, 22);
+  } else if (type === 'awp') {
+    // AWP Silhouette
+    ctx.rect(-65, -9, 115, 18);
+    ctx.rect(-25, -27, 50, 18);
+    ctx.rect(40, -5, 35, 10);
+    ctx.rect(-50, 9, 16, 28);
+    ctx.rect(-15, -40, 35, 13);
+  } else if (type === 'karambit') {
+    // Karambit Knife
+    ctx.arc(0, 0, 38, 0, Math.PI * 1.5);
+    ctx.lineTo(28, -28);
+    ctx.lineTo(18, -18);
+    ctx.arc(0, 0, 22, Math.PI * 1.5, 0, true);
+    ctx.closePath();
+    ctx.arc(22, 22, 10, 0, Math.PI * 2);
+  } else if (type === 'm4') {
+    // M4A4 Silhouette
+    ctx.rect(-55, -10, 95, 16);
+    ctx.rect(-18, -24, 38, 14);
+    ctx.rect(38, -6, 32, 10);
+    ctx.rect(-42, 6, 15, 28);
+    ctx.rect(-10, -32, 25, 8);
+  } else {
+    // Desert Eagle
+    ctx.rect(-40, -14, 75, 22);
+    ctx.rect(-28, 8, 15, 26);
+    ctx.rect(-10, -5, 24, 11);
+  }
+  ctx.fill();
+  ctx.stroke();
+  ctx.restore();
 }
 
 function drawCS2Bg() {
@@ -234,32 +268,23 @@ function drawCS2Bg() {
     if (s.y > cs2Canvas.height + s.radius) s.y = -s.radius;
   });
 
-  // Desenhar as skins reais do jogo a flutuar com brilho neon roxo
-  floatingItems.forEach(item => {
-    const img = loadedImages[item.imgIndex];
-    if (img && img.complete && img.naturalWidth > 0) {
-      ctxCS.save();
-      ctxCS.translate(item.x, item.y);
-      ctxCS.rotate(item.angle);
-      ctxCS.globalAlpha = item.opacity;
-      
-      // Efeito de brilho / sombra roxa neon à volta da skin
-      ctxCS.shadowBlur = 18;
-      ctxCS.shadowColor = "#b83ec8";
+  // Desenhar armas e facas a flutuar
+  floatingWeapons.forEach(w => {
+    ctxCS.save();
+    ctxCS.translate(w.x, w.y);
+    ctxCS.scale(w.scale, w.scale);
+    ctxCS.rotate(w.angle);
+    drawWeapon(ctxCS, w.type, w.opacity);
+    ctxCS.restore();
 
-      // Desenhar a imagem centralizada
-      ctxCS.drawImage(img, -item.size / 2, -(item.size / 2) * 0.6, item.size, item.size * 0.6);
-      ctxCS.restore();
-    }
+    w.x += w.speedX;
+    w.y += w.speedY;
+    w.angle += w.rotSpeed;
 
-    item.x += item.speedX;
-    item.y += item.speedY;
-    item.angle += item.rotSpeed;
-
-    if (item.x < -120) item.x = cs2Canvas.width + 120;
-    if (item.x > cs2Canvas.width + 120) item.x = -120;
-    if (item.y < -120) item.y = cs2Canvas.height + 120;
-    if (item.y > cs2Canvas.height + 120) item.y = -120;
+    if (w.x < -120) w.x = cs2Canvas.width + 120;
+    if (w.x > cs2Canvas.width + 120) w.x = -120;
+    if (w.y < -120) w.y = cs2Canvas.height + 120;
+    if (w.y > cs2Canvas.height + 120) w.y = -120;
   });
 
   // Desenhar miras táticas
@@ -310,11 +335,8 @@ function drawCS2Bg() {
   requestAnimationFrame(drawCS2Bg);
 }
 
-// Iniciar após carregar as imagens
-setTimeout(() => {
-  initCS2Bg();
-  drawCS2Bg();
-}, 500);
+initCS2Bg();
+drawCS2Bg();
 
 // --- CONFIGURAÇÕES E SITE ---
 const defaults={discord:"https://discord.gg/MF6FjUkbTQ",tiktok:"https://www.tiktok.com/@dioguinho_0_0",youtube:"https://www.youtube.com/@DidiCS2-M4",title:"Uma comunidade. Uma vibe.",sites:[["CSGOSKINS","DIDICS"],["SkinClub","DIDICS210"],["Site parceiro 3","CODIGO3"]]};
@@ -345,6 +367,7 @@ function drawWheel(list){
     return;
   }
   const slice=(Math.PI*2)/list.length;
+  list.excludingEach?.();
   list.forEach((name,i)=>{
     const angle=currentAngle+i*slice;
     ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,angle,angle+slice);ctx.closePath();
