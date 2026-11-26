@@ -122,13 +122,13 @@ footer{border-top:1px solid var(--line);padding:27px 0;color:var(--muted);font-s
 </main>
 <footer><div class="wrap foot"><span>© <span id="year"></span> DIDICS. Feito para a comunidade por morais.</span><span>Não afiliado à Valve ou à Steam.</span></div></footer><div class="toast" id="toast">Copiado!</div>
 <script>
-// --- AMBIENTE CS2 + SILhuetas DE ARMAS/FACAS REXAS A FLUTUAR ---
+// --- AMBIENTE CS2 COM SKINS / ARMAS 3D REALISTAS A FLUTUAR NO FUNDO ---
 const cs2Canvas = document.getElementById("cs2Canvas");
 const ctxCS = cs2Canvas.getContext("2d");
 let smokes = [];
 let embers = [];
 let crosshairs = [];
-let floatingWeapons = [];
+let floatingSkins = [];
 
 function resizeCS2() {
   cs2Canvas.width = window.innerWidth;
@@ -141,7 +141,7 @@ function initCS2Bg() {
   smokes = [];
   embers = [];
   crosshairs = [];
-  floatingWeapons = [];
+  floatingSkins = [];
 
   // Nuvens de fumo volumétrico
   for (let i = 0; i < 6; i++) {
@@ -181,68 +181,81 @@ function initCS2Bg() {
     });
   }
 
-  // Silhuetas de armas / facas roxas a flutuar suavemente pelo fundo
-  const weaponTypes = ['karambit', 'awp', 'ak', 'm4', 'bayonet'];
-  const weaponCount = Math.min(6, Math.max(4, Math.floor(window.innerWidth / 220)));
-  for (let i = 0; i < weaponCount; i++) {
-    floatingWeapons.push({
+  // Silhuetas e detalhes geométricos realistas de armas do CS2 (Karambit, AWP, AK-47, M4, Desert Eagle)
+  const skinTypes = ['karambit', 'awp', 'ak', 'm4', 'deagle'];
+  const skinCount = Math.min(6, Math.max(4, Math.floor(window.innerWidth / 220)));
+  for (let i = 0; i < skinCount; i++) {
+    floatingSkins.push({
       x: Math.random() * cs2Canvas.width,
       y: Math.random() * cs2Canvas.height,
-      type: weaponTypes[Math.floor(Math.random() * weaponTypes.length)],
-      scale: Math.random() * 0.5 + 0.6,
-      speedY: (Math.random() - 0.5) * 0.3 - 0.15,
-      speedX: (Math.random() - 0.5) * 0.3,
+      type: skinTypes[Math.floor(Math.random() * skinTypes.length)],
+      scale: Math.random() * 0.4 + 0.7,
+      speedY: (Math.random() - 0.5) * 0.25 - 0.1,
+      speedX: (Math.random() - 0.5) * 0.25,
       angle: Math.random() * Math.PI * 2,
-      rotSpeed: (Math.random() - 0.5) * 0.005,
-      opacity: Math.random() * 0.18 + 0.08
+      rotSpeed: (Math.random() - 0.5) * 0.004,
+      opacity: Math.random() * 0.15 + 0.08
     });
   }
 }
 
-// Função para desenhar silhuetas vetorizadas de armas / facas do CS2
-function drawWeaponSilhouette(ctx, type, scale, opacity) {
+// Função para desenhar silhuetas táticas detalhadas e realistas das armas do CS2
+function drawSkinSilhouette(ctx, type, scale, opacity) {
   ctx.save();
   ctx.scale(scale, scale);
-  ctx.fillStyle = `rgba(224, 93, 208, ${opacity})`;
-  ctx.strokeStyle = `rgba(255, 102, 204, ${opacity * 1.3})`;
-  ctx.lineWidth = 1.5;
-  ctx.shadowBlur = 12;
+  
+  // Gradiente roxo/rosa neon estilo Doppler / Fade / Ultraviolet
+  const gradSkin = ctx.createLinearGradient(-60, -30, 60, 30);
+  gradSkin.addColorStop(0, `rgba(255, 102, 204, ${opacity * 1.3})`);
+  gradSkin.addColorStop(0.5, `rgba(184, 62, 200, ${opacity})`);
+  gradSkin.addColorStop(1, `rgba(92, 53, 117, ${opacity * 0.7})`);
+
+  ctx.fillStyle = gradSkin;
+  ctx.strokeStyle = `rgba(255, 150, 220, ${opacity * 1.5})`;
+  ctx.lineWidth = 1.2;
+  ctx.shadowBlur = 14;
   ctx.shadowColor = "#b83ec8";
 
   ctx.beginPath();
   if (type === 'karambit') {
-    // Silhueta de Karambit curva
-    ctx.arc(0, 0, 35, 0, Math.PI * 1.5);
-    ctx.lineTo(25, -25);
-    ctx.lineTo(15, -15);
-    ctx.arc(0, 0, 20, Math.PI * 1.5, 0, true);
-    ctx.closePath();
+    // Lâmina curva detalhada de Karambit
+    ctx.moveTo(-25, 20);
+    ctx.quadraticCurveTo(-45, 0, -30, -30);
+    ctx.quadraticCurveTo(0, -45, 30, -20);
+    ctx.lineTo(20, -10);
+    ctx.quadraticCurveTo(0, -30, -20, -15);
+    ctx.quadraticCurveTo(-30, 0, -15, 15);
+    ctx.arc(15, 25, 10, 0, Math.PI * 2);
   } else if (type === 'awp') {
-    // Silhueta estilizada de AWP / Rifle de precisão
-    ctx.rect(-50, -8, 80, 14);
-    ctx.rect(-20, -22, 45, 14);
-    ctx.rect(30, -5, 35, 10);
-    ctx.rect(-45, 6, 15, 22);
-    ctx.rect(-35, 28, 25, 6);
+    // AWP / Sniper detalhada
+    ctx.roundRect(-60, -10, 110, 18, 4);
+    ctx.roundRect(-25, -28, 55, 16, 3);
+    ctx.roundRect(35, -6, 40, 10, 2);
+    ctx.roundRect(-50, 8, 18, 26, 3);
+    ctx.roundRect(-40, 34, 30, 6, 2);
+    ctx.roundRect(-15, -42, 35, 14, 4); // Mira telescópica
   } else if (type === 'ak') {
-    // Silhueta estilizada de AK-47
-    ctx.rect(-55, -10, 90, 16);
-    ctx.rect(-15, -24, 30, 14);
-    ctx.rect(35, -7, 25, 12);
-    ctx.rect(-40, 6, 12, 24);
-    ctx.rect(-25, 8, 10, 18);
+    // AK-47 detalhada
+    ctx.roundRect(-65, -12, 105, 18, 3);
+    ctx.roundRect(-15, -26, 35, 14, 3);
+    ctx.roundRect(40, -8, 28, 12, 2);
+    ctx.roundRect(-45, 6, 14, 28, 3);
+    ctx.roundRect(-30, 10, 12, 22, 2);
+    ctx.roundRect(-50, -4, 20, 8, 2);
   } else if (type === 'm4') {
-    // Silhueta estilizada de M4A4 / M4A1-S
-    ctx.rect(-50, -9, 85, 15);
-    ctx.rect(-18, -22, 35, 13);
-    ctx.rect(35, -6, 30, 10);
-    ctx.rect(-42, 6, 14, 25);
+    // M4A4 / M4A1-S detalhada
+    ctx.roundRect(-55, -10, 95, 16, 4);
+    ctx.roundRect(-20, -24, 40, 14, 3);
+    ctx.roundRect(40, -7, 35, 10, 2);
+    ctx.roundRect(-45, 6, 16, 26, 3);
+    ctx.roundRect(-10, -32, 25, 8, 2);
   } else {
-    // Bayonet / Faca clássica
-    ctx.rect(-45, -5, 60, 10);
-    ctx.rect(-15, -15, 10, 10);
-    ctx.rect(-50, -8, 8, 16);
+    // Desert Eagle
+    ctx.roundRect(-40, -14, 75, 22, 4);
+    ctx.roundRect(-30, 8, 16, 25, 3);
+    ctx.roundRect(-10, -6, 25, 12, 2);
   }
+  
   ctx.fill();
   ctx.stroke();
   ctx.restore();
@@ -269,23 +282,22 @@ function drawCS2Bg() {
     if (s.y > cs2Canvas.height + s.radius) s.y = -s.radius;
   });
 
-  // Desenhar armas e facas roxas a flutuar
-  floatingWeapons.forEach(w => {
+  // Desenhar skins / armas a flutuar
+  floatingSkins.forEach(w => {
     ctxCS.save();
     ctxCS.translate(w.x, w.y);
     ctxCS.rotate(w.angle);
-    drawWeaponSilhouette(ctxCS, w.type, w.scale, w.opacity);
+    drawSkinSilhouette(ctxCS, w.type, w.scale, w.opacity);
     ctxCS.restore();
 
     w.x += w.speedX;
     w.y += w.speedY;
     w.angle += w.rotSpeed;
 
-    // Fazer wrap around no ecrã
-    if (w.x < -80) w.x = cs2Canvas.width + 80;
-    if (w.x > cs2Canvas.width + 80) w.x = -80;
-    if (w.y < -80) w.y = cs2Canvas.height + 80;
-    if (w.y > cs2Canvas.height + 80) w.y = -80;
+    if (w.x < -100) w.x = cs2Canvas.width + 100;
+    if (w.x > cs2Canvas.width + 100) w.x = -100;
+    if (w.y < -100) w.y = cs2Canvas.height + 100;
+    if (w.y > cs2Canvas.height + 100) w.y = -100;
   });
 
   // Desenhar miras táticas
@@ -352,7 +364,6 @@ function copyCode(t){navigator.clipboard?.writeText(t).then(()=>notify("Código 
 
 const names=document.getElementById("names");
 function getNames(){return names.value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean)}
-names.value.split(/\r?\n/).forEach(()=>{});
 names.addEventListener("input",()=>{const n=getNames();document.getElementById("count").textContent=n.length+" participantes";drawWheel(n)});
 function clearNames(){names.value="";document.getElementById("count").textContent="0 participantes";document.getElementById("winner").textContent="O vencedor aparece aqui";drawWheel([])}
 
