@@ -11,6 +11,7 @@
 *{box-sizing:border-box}html{scroll-behavior:smooth}
 body{
   margin:0;
+  /* Fundo estilo CS2: atmosfera tática, fumo volumétrico, grelha técnica e iluminação neon roxa/rosa */
   background: 
     radial-gradient(circle at 85% 15%, rgba(255, 102, 204, 0.22) 0%, transparent 45%),
     radial-gradient(circle at 15% 65%, rgba(184, 62, 200, 0.24) 0%, transparent 50%),
@@ -21,6 +22,7 @@ body{
   font-family:'DM Sans',sans-serif;
 }
 
+/* Textura tática CS2 (grelha HUD + faixas diagonais subtis) */
 body::before{
   content:"";
   position:fixed;
@@ -115,18 +117,17 @@ footer{border-top:1px solid var(--line);padding:27px 0;color:var(--muted);font-s
 <div class="skinrow">
 <div class="skin"><div class="skinvisual"><img src="falchion.png" alt="Knife CS2" onerror="this.style.display='none'"></div><div class="skininfo"><strong>Knife</strong><small>Counter-Strike 2</small></div></div>
 <div class="skin"><div class="skinvisual"><img src="https://community.cloudflare.steamstatic.com/economy/image/class/730/weapon_awp" alt="AWP CS2" onerror="this.style.display='none'"></div><div class="skininfo"><strong>AWP</strong><small>Counter-Strike 2</small></div></div>
-<div class="skin"><div class="skinvisual"><img src="phase4.png" alt="Karambit CS2" onerror="this.style.display='none'"></div><div class="skininfo"><strong>Karambit</strong><small>Counter-Strike 2</small></div></div>
+<div class="skin"><div class="skinvisual"><img src="phase4.png" alt="Karambit CS2" onerror="this.style.display='none'"></div><div class="skininfo"><strong>Knife</strong><small>Counter-Strike 2</small></div></div>
 </div></section>
 </main>
 <footer><div class="wrap foot"><span>© <span id="year"></span> DIDICS. Feito para a comunidade por morais.</span><span>Não afiliado à Valve ou à Steam.</span></div></footer><div class="toast" id="toast">Copiado!</div>
 <script>
-// --- AMBIENTE CS2 COM ARMAS E FACAS DO CS2 EM VETOR ROXO NEON A FLUTUAR ---
+// --- AMBIENTE VISUAL CS2 (FUMO VOLUMÉTRICO, FAÍSCAS E MARCADORES TÁTICOS) ---
 const cs2Canvas = document.getElementById("cs2Canvas");
 const ctxCS = cs2Canvas.getContext("2d");
 let smokes = [];
 let embers = [];
 let crosshairs = [];
-let floatingWeapons = [];
 
 function resizeCS2() {
   cs2Canvas.width = window.innerWidth;
@@ -139,9 +140,8 @@ function initCS2Bg() {
   smokes = [];
   embers = [];
   crosshairs = [];
-  floatingWeapons = [];
 
-  // Nuvens de fumo volumétrico
+  // Nuvens de fumo volumétrico estilo CS2 nos tons do site
   for (let i = 0; i < 6; i++) {
     smokes.push({
       x: Math.random() * cs2Canvas.width,
@@ -153,8 +153,8 @@ function initCS2Bg() {
     });
   }
 
-  // Faíscas táticas
-  const emberCount = Math.min(30, Math.floor(window.innerWidth / 35));
+  // Faíscas / partículas de combate tático
+  const emberCount = Math.min(35, Math.floor(window.innerWidth / 32));
   for (let i = 0; i < emberCount; i++) {
     embers.push({
       x: Math.random() * cs2Canvas.width,
@@ -162,89 +162,22 @@ function initCS2Bg() {
       size: Math.random() * 2.2 + 0.8,
       speedY: -(Math.random() * 0.65 + 0.25),
       speedX: (Math.random() - 0.5) * 0.5,
-      opacity: Math.random() * 0.6 + 0.2,
+      opacity: Math.random() * 0.65 + 0.25,
       pink: Math.random() > 0.45
     });
   }
 
-  // Miras HUD
-  for (let i = 0; i < 4; i++) {
+  // Miras e marcadores HUD subtis no fundo
+  for (let i = 0; i < 5; i++) {
     crosshairs.push({
       x: Math.random() * cs2Canvas.width,
       y: Math.random() * cs2Canvas.height,
       size: Math.random() * 8 + 7,
-      opacity: Math.random() * 0.12 + 0.05,
+      opacity: Math.random() * 0.14 + 0.06,
       driftX: (Math.random() - 0.5) * 0.15,
       driftY: (Math.random() - 0.5) * 0.15
     });
   }
-
-  // Armas / facas icônicas do CS2 (AK, AWP, Karambit, M4, Desert Eagle)
-  const types = ['ak', 'awp', 'karambit', 'm4', 'deagle'];
-  const count = Math.min(6, Math.max(4, Math.floor(window.innerWidth / 220)));
-  for (let i = 0; i < count; i++) {
-    floatingWeapons.push({
-      x: Math.random() * cs2Canvas.width,
-      y: Math.random() * cs2Canvas.height,
-      type: types[Math.floor(Math.random() * types.length)],
-      scale: Math.random() * 0.4 + 0.8,
-      speedY: (Math.random() - 0.5) * 0.2 - 0.08,
-      speedX: (Math.random() - 0.5) * 0.2,
-      angle: Math.random() * Math.PI * 2,
-      rotSpeed: (Math.random() - 0.5) * 0.003,
-      opacity: Math.random() * 0.18 + 0.1
-    });
-  }
-}
-
-// Desenho detalhado e perfeito das armas e facas do CS2 em vetor
-function drawWeapon(ctx, type, opacity) {
-  ctx.save();
-  ctx.strokeStyle = `rgba(255, 102, 204, ${opacity * 1.4})`;
-  ctx.fillStyle = `rgba(184, 62, 200, ${opacity * 0.85})`;
-  ctx.lineWidth = 2;
-  ctx.shadowBlur = 15;
-  ctx.shadowColor = "#ff66cc";
-
-  ctx.beginPath();
-  if (type === 'ak') {
-    // AK-47 Silhouette
-    ctx.rect(-60, -10, 100, 16);
-    ctx.rect(-15, -25, 30, 15);
-    ctx.rect(38, -6, 25, 12);
-    ctx.rect(-45, 6, 14, 30);
-    ctx.rect(-30, 10, 12, 22);
-  } else if (type === 'awp') {
-    // AWP Silhouette
-    ctx.rect(-65, -9, 115, 18);
-    ctx.rect(-25, -27, 50, 18);
-    ctx.rect(40, -5, 35, 10);
-    ctx.rect(-50, 9, 16, 28);
-    ctx.rect(-15, -40, 35, 13);
-  } else if (type === 'karambit') {
-    // Karambit Knife
-    ctx.arc(0, 0, 38, 0, Math.PI * 1.5);
-    ctx.lineTo(28, -28);
-    ctx.lineTo(18, -18);
-    ctx.arc(0, 0, 22, Math.PI * 1.5, 0, true);
-    ctx.closePath();
-    ctx.arc(22, 22, 10, 0, Math.PI * 2);
-  } else if (type === 'm4') {
-    // M4A4 Silhouette
-    ctx.rect(-55, -10, 95, 16);
-    ctx.rect(-18, -24, 38, 14);
-    ctx.rect(38, -6, 32, 10);
-    ctx.rect(-42, 6, 15, 28);
-    ctx.rect(-10, -32, 25, 8);
-  } else {
-    // Desert Eagle
-    ctx.rect(-40, -14, 75, 22);
-    ctx.rect(-28, 8, 15, 26);
-    ctx.rect(-10, -5, 24, 11);
-  }
-  ctx.fill();
-  ctx.stroke();
-  ctx.restore();
 }
 
 function drawCS2Bg() {
@@ -268,26 +201,7 @@ function drawCS2Bg() {
     if (s.y > cs2Canvas.height + s.radius) s.y = -s.radius;
   });
 
-  // Desenhar armas e facas a flutuar
-  floatingWeapons.forEach(w => {
-    ctxCS.save();
-    ctxCS.translate(w.x, w.y);
-    ctxCS.scale(w.scale, w.scale);
-    ctxCS.rotate(w.angle);
-    drawWeapon(ctxCS, w.type, w.opacity);
-    ctxCS.restore();
-
-    w.x += w.speedX;
-    w.y += w.speedY;
-    w.angle += w.rotSpeed;
-
-    if (w.x < -120) w.x = cs2Canvas.width + 120;
-    if (w.x > cs2Canvas.width + 120) w.x = -120;
-    if (w.y < -120) w.y = cs2Canvas.height + 120;
-    if (w.y > cs2Canvas.height + 120) w.y = -120;
-  });
-
-  // Desenhar miras táticas
+  // Desenhar miras táticas CS2 discretas
   crosshairs.forEach(c => {
     ctxCS.save();
     ctxCS.strokeStyle = `rgba(224, 93, 208, ${c.opacity})`;
@@ -334,7 +248,6 @@ function drawCS2Bg() {
 
   requestAnimationFrame(drawCS2Bg);
 }
-
 initCS2Bg();
 drawCS2Bg();
 
@@ -367,7 +280,6 @@ function drawWheel(list){
     return;
   }
   const slice=(Math.PI*2)/list.length;
-  list.excludingEach?.();
   list.forEach((name,i)=>{
     const angle=currentAngle+i*slice;
     ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,angle,angle+slice);ctx.closePath();
