@@ -101,9 +101,13 @@ footer{border-top:1px solid var(--line);padding:27px 0;color:var(--muted);font-s
   <p class="muted">Escreve um nome por linha. Podes colar uma lista inteira.</p>
   <textarea class="field" id="names" placeholder="Jogador1&#10;Jogador2&#10;Jogador3"></textarea>
   
-  <div style="margin: 12px 0; display: flex; align-items: center; gap: 8px;">
+  <div style="margin: 12px 0 8px; display: flex; align-items: center; gap: 8px;">
     <input type="checkbox" id="removeWinner" style="accent-color: var(--orange2); width: 16px; height: 16px; cursor: pointer;">
     <label for="removeWinner" class="muted" style="cursor: pointer; font-size: 13px;">Remover vencedor da lista automaticamente</label>
+  </div>
+
+  <div style="margin-bottom: 14px;">
+    <button class="btn ghost" type="button" onclick="shuffleNames()" style="width: 100%; padding: 9px 14px; font-size: 13px;">🔀 Baralhar nomes na roleta</button>
   </div>
 
   <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
@@ -141,7 +145,6 @@ function initCS2Bg() {
   embers = [];
   crosshairs = [];
 
-  // Nuvens de fumo volumétrico estilo CS2 nos tons do site
   for (let i = 0; i < 6; i++) {
     smokes.push({
       x: Math.random() * cs2Canvas.width,
@@ -153,7 +156,6 @@ function initCS2Bg() {
     });
   }
 
-  // Faíscas / partículas de combate tático
   const emberCount = Math.min(35, Math.floor(window.innerWidth / 32));
   for (let i = 0; i < emberCount; i++) {
     embers.push({
@@ -167,7 +169,6 @@ function initCS2Bg() {
     });
   }
 
-  // Miras e marcadores HUD subtis no fundo
   for (let i = 0; i < 5; i++) {
     crosshairs.push({
       x: Math.random() * cs2Canvas.width,
@@ -183,7 +184,6 @@ function initCS2Bg() {
 function drawCS2Bg() {
   ctxCS.clearRect(0, 0, cs2Canvas.width, cs2Canvas.height);
 
-  // Desenhar fumo volumétrico
   smokes.forEach(s => {
     const grad = ctxCS.createRadialGradient(s.x, s.y, 10, s.x, s.y, s.radius);
     grad.addColorStop(0, s.color);
@@ -201,7 +201,6 @@ function drawCS2Bg() {
     if (s.y > cs2Canvas.height + s.radius) s.y = -s.radius;
   });
 
-  // Desenhar miras táticas CS2 discretas
   crosshairs.forEach(c => {
     ctxCS.save();
     ctxCS.strokeStyle = `rgba(224, 93, 208, ${c.opacity})`;
@@ -223,7 +222,6 @@ function drawCS2Bg() {
     if (c.y > cs2Canvas.height + 20) c.y = -20;
   });
 
-  // Desenhar faíscas ascendentes
   embers.forEach(e => {
     ctxCS.beginPath();
     ctxCS.arc(e.x, e.y, e.size, 0, Math.PI * 2);
@@ -267,6 +265,21 @@ const names=document.getElementById("names");
 function getNames(){return names.value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean)}
 names.addEventListener("input",()=>{const n=getNames();document.getElementById("count").textContent=n.length+" participantes";drawWheel(n)});
 function clearNames(){names.value="";document.getElementById("count").textContent="0 participantes";document.getElementById("winner").textContent="O vencedor aparece aqui";drawWheel([])}
+
+function shuffleNames() {
+  const list = getNames();
+  if (list.length < 2) {
+    notify("Precisas de pelo menos 2 nomes para baralhar.");
+    return;
+  }
+  for (let i = list.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [list[i], list[j]] = [list[j], list[i]];
+  }
+  names.value = list.join("\n");
+  drawWheel(list);
+  notify("Nomes baralhados!");
+}
 
 const canvas=document.getElementById("wheelCanvas"),ctx=canvas.getContext("2d");
 let currentAngle=0;
