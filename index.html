@@ -50,11 +50,12 @@ section{padding:54px 0}.sectionhead{display:flex;justify-content:space-between;a
 /* Estilos da Caixa Diária e Perfil */
 .profile-card{background:var(--panel);border:1px solid var(--line);border-radius:17px;padding:24px;margin-bottom:30px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:15px}
 .case-box{background:var(--panel);border:1px solid var(--line);border-radius:17px;padding:28px;text-align:center;margin-top:20px}
-.case-viewport{width:100%;max-width:650px;height:130px;background:#0d0814;border:2px solid var(--line);border-radius:12px;margin:20px auto;overflow:hidden;position:relative;display:flex;align-items:center}
+.case-viewport{width:100%;max-width:650px;height:148px;background:#0d0814;border:2px solid var(--line);border-radius:12px;margin:20px auto;overflow:hidden;position:relative;display:flex;align-items:center}
 .case-viewport::before{content:"";position:absolute;top:0;bottom:0;left:50%;width:3px;background:var(--pink);transform:translateX(-50%);z-index:5;box-shadow:0 0 10px var(--pink)}
 .case-strip{display:flex;position:absolute;left:0;will-change:transform}
-.case-item{min-width:130px;height:110px;background:#160f24;border:1px solid #3d2352;border-radius:8px;margin:0 6px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px;flex-shrink:0}
-.case-item span{font-size:11px;font-weight:700;margin-top:6px;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:110px}
+.case-item{min-width:130px;height:128px;background:#160f24;border:1px solid #3d2352;border-radius:8px;margin:0 6px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px;flex-shrink:0}
+.case-item img{width:88px;height:56px;object-fit:contain;filter:drop-shadow(0 4px 6px rgba(0,0,0,0.75));margin-bottom:4px}
+.case-item span{font-size:11px;font-weight:700;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:114px}
 .case-item small{font-size:10px;color:var(--pink);margin-top:2px}
 .rarity-common{border-color:#b0c3d9;color:#b0c3d9}
 .rarity-uncommon{border-color:#5e98d9;color:#5e98d9}
@@ -62,6 +63,10 @@ section{padding:54px 0}.sectionhead{display:flex;justify-content:space-between;a
 .rarity-epic{border-color:#d32ce6;color:#d32ce6}
 .rarity-legendary{border-color:#eb4b4b;color:#eb4b4b}
 .rarity-knife{border-color:#ffd700;color:#ffd700;background:linear-gradient(135deg, #332900, #160f24)}
+
+.won-preview{display:none;flex-direction:column;align-items:center;margin:10px auto 14px;padding:12px 20px;border-radius:12px;background:#0d0814;border:1px solid var(--line);max-width:260px}
+.won-preview.show{display:flex}
+.won-preview img{width:130px;height:80px;object-fit:contain;filter:drop-shadow(0 8px 14px rgba(0,0,0,0.8))}
 
 footer{border-top:1px solid var(--line);padding:27px 0;color:var(--muted);font-size:12px}.foot{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
 #editor{display:none;background:#1b1328;border:1px solid #5a386d;border-radius:16px;padding:22px;margin:25px auto 0}#editor.show{display:block}.editgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.editlabel{font-size:11px;color:var(--pink);font-weight:700;display:block;margin-top:10px}.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--pink);color:#0b0a0f;padding:11px 18px;border-radius:9px;font-weight:800;font-size:13px;opacity:0;pointer-events:none;transition:.2s;z-index:9}.toast.show{opacity:1}
@@ -119,6 +124,11 @@ footer{border-top:1px solid var(--line);padding:27px 0;color:var(--muted);font-s
     
     <div class="case-viewport">
       <div class="case-strip" id="caseStrip"></div>
+    </div>
+
+    <div class="won-preview" id="wonPreview">
+      <img id="wonImg" src="" alt="Arma ganha">
+      <small id="wonRarity" style="font-weight:700; margin-top:4px;"></small>
     </div>
 
     <div class="winner" id="caseResult" style="margin:10px 0;">Clica abaixo para abrir a caixa</div>
@@ -283,14 +293,56 @@ function saveProfile() {
   notify("Perfil guardado com sucesso neste dispositivo!");
 }
 
-// --- SISTEMA DA CAIXA DIÁRIA CS2 ---
+// --- SISTEMA DA CAIXA DIÁRIA CS2 (COM FOTOS DAS ARMAS) ---
 const caseItemsData = [
-  { name: "P250 | Sand Dune", rarity: "rarity-common", type: "Comum", points: 10, prob: 50 },
-  { name: "MAC-10 | Candy Apple", rarity: "rarity-uncommon", type: "Incomum", points: 25, prob: 28 },
-  { name: "AK-47 | Slate", rarity: "rarity-rare", type: "Rara", points: 60, prob: 14 },
-  { name: "M4A1-S | Printstream", rarity: "rarity-epic", type: "Épica", points: 150, prob: 6 },
-  { name: "AWP | Asiimov", rarity: "rarity-legendary", type: "Lendária", points: 400, prob: 1.8 },
-  { name: "Karambit | Fade", rarity: "rarity-knife", type: "Knife Secret", points: 1000, prob: 0.2 }
+  {
+    name: "P250 | Sand Dune",
+    rarity: "rarity-common",
+    type: "Comum",
+    points: 10,
+    prob: 50,
+    img: "https://community.cloudflare.steamstatic.com/economy/image/class/730/weapon_p250"
+  },
+  {
+    name: "MAC-10 | Candy Apple",
+    rarity: "rarity-uncommon",
+    type: "Incomum",
+    points: 25,
+    prob: 28,
+    img: "https://community.cloudflare.steamstatic.com/economy/image/class/730/weapon_mac10"
+  },
+  {
+    name: "AK-47 | Slate",
+    rarity: "rarity-rare",
+    type: "Rara",
+    points: 60,
+    prob: 14,
+    img: "https://community.cloudflare.steamstatic.com/economy/image/class/730/weapon_ak47"
+  },
+  {
+    name: "M4A1-S | Printstream",
+    rarity: "rarity-epic",
+    type: "Épica",
+    points: 150,
+    prob: 6,
+    img: "https://community.cloudflare.steamstatic.com/economy/image/class/730/weapon_m4a1_silencer"
+  },
+  {
+    name: "AWP | Asiimov",
+    rarity: "rarity-legendary",
+    type: "Lendária",
+    points: 400,
+    prob: 1.8,
+    img: "https://community.cloudflare.steamstatic.com/economy/image/class/730/weapon_awp"
+  },
+  {
+    name: "Karambit | Fade",
+    rarity: "rarity-knife",
+    type: "Knife Secret",
+    points: 1000,
+    prob: 0.2,
+    img: "phase4.png"
+  }
 ];
 
 function getRandomItem() {
@@ -306,11 +358,14 @@ function getRandomItem() {
 function initCaseStrip(targetItem = null) {
   const strip = document.getElementById("caseStrip");
   strip.innerHTML = "";
-  // Gerar 50 itens para simular o efeito de rolagem
   let html = "";
   for (let i = 0; i < 50; i++) {
     let item = (i === 42 && targetItem) ? targetItem : caseItemsData[Math.floor(Math.random() * caseItemsData.length)];
-    html += `<div class="case-item ${item.rarity}"><span>${item.name}</span><small>+${item.points} pts</small></div>`;
+    html += `<div class="case-item ${item.rarity}">
+      <img src="${item.img}" alt="${item.name}" onerror="this.style.opacity='0'">
+      <span>${item.name}</span>
+      <small>+${item.points} pts</small>
+    </div>`;
   }
   strip.innerHTML = html;
   strip.style.transform = "translateX(0px)";
@@ -318,7 +373,7 @@ function initCaseStrip(targetItem = null) {
 
 function checkCaseCooldown() {
   const now = Date.now();
-  const cooldown = 24 * 60 * 60 * 1000; // 24 horas
+  const cooldown = 24 * 60 * 60 * 1000;
   const elapsed = now - userProfile.lastCaseTime;
   const btn = document.getElementById("openCaseBtn");
   const timerText = document.getElementById("caseTimerText");
@@ -352,21 +407,20 @@ function openDailyCase() {
 
   const btn = document.getElementById("openCaseBtn");
   btn.disabled = true;
+  document.getElementById("wonPreview").classList.remove("show");
   document.getElementById("caseResult").textContent = "A abrir caixa...";
 
-  // Sortear o item final de antemão
   const winningItem = getRandomItem();
   initCaseStrip(winningItem);
 
   const strip = document.getElementById("caseStrip");
-  // Cada item tem 142px de largura total (130px + 12px margins)
-  // O item vencedor está no índice 42. Centrar o item 42 no viewport de ~650px (offset de ~260px)
+  const viewportWidth = document.querySelector(".case-viewport").offsetWidth || 650;
   const itemWidth = 142;
-  const targetOffset = (42 * itemWidth) - (650 / 2) + (itemWidth / 2) + (Math.random() * 40 - 20);
+  const targetOffset = (42 * itemWidth) - (viewportWidth / 2) + (itemWidth / 2) + (Math.random() * 40 - 20);
 
   strip.style.transition = "none";
   strip.style.transform = "translateX(0px)";
-  void strip.offsetWidth; // Trigger reflow
+  void strip.offsetWidth;
 
   strip.style.transition = "transform 5s cubic-bezier(0.08, 0.82, 0.14, 1)";
   strip.style.transform = `translateX(-${targetOffset}px)`;
@@ -377,13 +431,21 @@ function openDailyCase() {
     localStorage.setItem("didicsUserProfile", JSON.stringify(userProfile));
     document.getElementById("userPoints").textContent = userProfile.points;
 
+    const previewBox = document.getElementById("wonPreview");
+    const wonImg = document.getElementById("wonImg");
+    const wonRarity = document.getElementById("wonRarity");
+
+    wonImg.src = winningItem.img;
+    wonRarity.textContent = `${winningItem.type} • +${winningItem.points} pts`;
+    previewBox.className = `won-preview show ${winningItem.rarity}`;
+
     document.getElementById("caseResult").innerHTML = `🎉 Ganhaste: <span style="color:var(--pink)">${winningItem.name}</span> (+${winningItem.points} pts)!`;
+    playWin();
     notify(`Parabéns! Obtiveste ${winningItem.name}`);
     checkCaseCooldown();
   }, 5200);
 }
 
-// Atualizar temporizador a cada minuto
 setInterval(checkCaseCooldown, 60000);
 
 // --- CONFIGURAÇÕES E SITE ---
