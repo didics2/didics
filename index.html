@@ -93,7 +93,7 @@ footer{border-top:1px solid var(--line);padding:27px 0;color:var(--muted);font-s
 </style></head>
 <body>
 <canvas id="cs2Canvas"></canvas>
-<header><div class="wrap nav"><a class="logo" href="#">DIDI<span>CS</span></a><nav class="links"><a href="#redes">Redes</a><a href="#codigos">Códigos</a><a href="#caixas">Caixas Diárias</a><a href="#giveaway">Giveaways</a><a href="#skins">CS2</a></nav><div class="navright"><span class="pill" id="userHeaderTag">JOGADOR</span></div></div></header>
+<header><div class="wrap nav"><a class="logo" href="#">DIDI<span>CS</span></a><nav class="links"><a href="#redes">Redes</a><a href="#codigos">Códigos</a><a href="#caixas">Caixas Diárias</a><a href="#giveaway">Giveaways</a><a href="#skins">CS2</a></nav><div class="navright"><span class="pill" id="userHeaderTag">NÃO LOGADO</span></div></div></header>
 <main class="wrap">
 <div id="editor">
  <div class="sectionhead"><div><div class="eyebrow">PAINEL SIMPLES</div><h2>Personalizar o DIDICS</h2><p>Altera os links e códigos aqui, sem mexer no código do site.</p></div><button class="btn ghost" onclick="toggleEditor()">Fechar</button></div>
@@ -144,7 +144,7 @@ footer{border-top:1px solid var(--line);padding:27px 0;color:var(--muted);font-s
         </div>
         <div class="case-timer-box" id="timerBox">
           <small>Próxima caixa em:</small>
-          <span id="countdownDisplay">PRONTA A ABRIR!</span>
+          <span id="countdownDisplay">FAZ LOGIN PRIMEIRO</span>
         </div>
       </div>
 
@@ -154,9 +154,9 @@ footer{border-top:1px solid var(--line);padding:27px 0;color:var(--muted);font-s
 
       <div style="display:flex; gap:12px; align-items:center; justify-content:space-between; flex-wrap:wrap;">
         <div id="lastDropResult" style="font-weight:700; font-size:14px; color:var(--cream);">
-          Resultado: <span style="color:var(--muted)">Ainda não abriste hoje.</span>
+          Resultado: <span style="color:var(--muted)">Faz login para começar.</span>
         </div>
-        <button class="btn" id="openCaseBtn" onclick="openDailyCase()" style="min-width:180px;">Abrir Caixa Grátis</button>
+        <button class="btn" id="openCaseBtn" onclick="openDailyCase()" style="min-width:180px;" disabled>Abrir Caixa Grátis</button>
       </div>
 
       <div>
@@ -168,7 +168,7 @@ footer{border-top:1px solid var(--line);padding:27px 0;color:var(--muted);font-s
     <div class="case-sidebar">
       <div>
         <h3 style="font:600 18px 'Space Grotesk'; margin:0 0 4px;">🏆 Ranking da Comunidade</h3>
-        <p class="muted" style="font-size:12px; margin:0 0 14px;">Jogadores ativos que fizeram login no dispositivo.</p>
+        <p class="muted" style="font-size:12px; margin:0 0 14px;">Apenas jogadores reais com login efetuado.</p>
       </div>
       <div class="leaderboard-list" id="leaderboardList"></div>
       <div style="background:#0d0814; border:1px solid var(--line); border-radius:12px; padding:14px; margin-top:auto;">
@@ -345,7 +345,6 @@ const CASE_ITEMS = [
   { id: 6, name: "Karambit | Doppler (Phase 4)", rarity: "gold", class: "item-gold", points: 5000, odds: "0.2%", img: "phase4.png" }
 ];
 
-// Gerar ID de dispositivo único se não existir
 let deviceData = JSON.parse(localStorage.getItem("didicsDevice") || "null");
 if (!deviceData) {
   deviceData = {
@@ -360,8 +359,6 @@ if (!deviceData) {
 if (deviceData.username) {
   document.getElementById("myUsername").value = deviceData.username;
   document.getElementById("userHeaderTag").textContent = deviceData.username.toUpperCase();
-} else {
-  document.getElementById("userHeaderTag").textContent = "NÃO LOGADO";
 }
 
 function saveMyUsername() {
@@ -371,6 +368,7 @@ function saveMyUsername() {
   localStorage.setItem("didicsDevice", JSON.stringify(deviceData));
   document.getElementById("userHeaderTag").textContent = newName.toUpperCase();
   updateLeaderboardData();
+  checkCaseTimer();
   notify("Login efetuado com sucesso!");
 }
 
@@ -386,7 +384,6 @@ function renderPoolGrid() {
 }
 renderPoolGrid();
 
-// Ranking dinâmico apenas com quem faz login (guardado no localStorage global da comu/dispositivo)
 function getLeaderboard() {
   let board = JSON.parse(localStorage.getItem("didicsLeaderboard") || "[]");
   
@@ -410,7 +407,7 @@ function updateLeaderboardData() {
   const listEl = document.getElementById("leaderboardList");
 
   if (board.length === 0) {
-    listEl.innerHTML = `<div style="text-align:center; color:var(--muted); font-size:12px; padding:15px;">Ainda nenhum jogador fez login ou abriu caixas. Sê o primeiro!</div>`;
+    listEl.innerHTML = `<div style="text-align:center; color:var(--muted); font-size:12px; padding:15px;">Faz login para aparecer no ranking!</div>`;
     return;
   }
 
@@ -426,8 +423,6 @@ updateLeaderboardData();
 
 const COOLDOWN_TIME = 24 * 60 * 60 * 1000;
 function checkCaseTimer() {
-  const now = Date.now();
-  const elapsed = now - deviceData.lastOpen;
   const btn = document.getElementById("openCaseBtn");
   const timerDisplay = document.getElementById("countdownDisplay");
 
@@ -437,6 +432,9 @@ function checkCaseTimer() {
     btn.textContent = "Login Necessário";
     return;
   }
+
+  const now = Date.now();
+  const elapsed = now - deviceData.lastOpen;
 
   if (elapsed < COOLDOWN_TIME) {
     const remaining = COOLDOWN_TIME - elapsed;
