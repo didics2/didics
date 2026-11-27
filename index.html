@@ -106,6 +106,10 @@ footer{border-top:1px solid var(--line);padding:27px 0;color:var(--muted);font-s
     <label for="removeWinner" class="muted" style="cursor: pointer; font-size: 13px;">Remover vencedor da lista automaticamente</label>
   </div>
 
+  <div style="margin-bottom: 12px;">
+    <button class="btn ghost" style="width: 100%; font-size: 12px; padding: 9px;" onclick="shuffleNames()">🔀 Baralhar nomes</button>
+  </div>
+
   <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
     <span class="muted" id="count">0 participantes</span>
     <button class="btn ghost" onclick="clearNames()">Limpar lista</button>
@@ -267,6 +271,18 @@ const names=document.getElementById("names");
 function getNames(){return names.value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean)}
 names.addEventListener("input",()=>{const n=getNames();document.getElementById("count").textContent=n.length+" participantes";drawWheel(n)});
 function clearNames(){names.value="";document.getElementById("count").textContent="0 participantes";document.getElementById("winner").textContent="O vencedor aparece aqui";drawWheel([])}
+
+function shuffleNames(){
+  let list=getNames();
+  if(list.length<2){notify("Adiciona pelo menos 2 nomes para baralhar.");return}
+  for(let i=list.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [list[i],list[j]]=[list[j],list[i]];
+  }
+  names.value=list.join("\n");
+  drawWheel(list);
+  notify("Lista baralhada!");
+}
 
 const canvas=document.getElementById("wheelCanvas"),ctx=canvas.getContext("2d");
 let currentAngle=0;
