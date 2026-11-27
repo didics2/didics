@@ -51,7 +51,6 @@ section{padding:54px 0}.sectionhead{display:flex;justify-content:space-between;a
 .wheelcenter{position:absolute;width:74px;height:74px;border-radius:50%;background:#121017;border:2px solid var(--pink);display:grid;place-items:center;font:700 13px 'Space Grotesk';color:var(--pink);z-index:5}
 .entrybox h3,.wheelbox h3{font:600 20px 'Space Grotesk';margin:0 0 8px}.muted{color:var(--muted);font-size:13px;line-height:1.6}.field{width:100%;background:#0d0814;border:1px solid var(--line);border-radius:8px;color:var(--cream);padding:12px;margin:8px 0;outline:none}.field:focus{border-color:var(--orange2)}textarea.field{min-height:130px;resize:vertical}.winner{min-height:28px;text-align:center;color:var(--pink);font-weight:800;font-size:17px}
 
-/* --- ESTILOS DO SISTEMA DE CAIXAS & RANKING --- */
 .case-hub{display:grid;grid-template-columns:1fr 340px;gap:22px}
 .case-main{background:var(--panel);border:1px solid var(--line);border-radius:17px;padding:24px;display:flex;flex-direction:column;gap:20px}
 .case-sidebar{background:var(--panel);border:1px solid var(--line);border-radius:17px;padding:24px;display:flex;flex-direction:column;gap:18px}
@@ -61,7 +60,6 @@ section{padding:54px 0}.sectionhead{display:flex;justify-content:space-between;a
 .case-timer-box small{display:block;color:var(--muted);font-size:11px}
 .case-timer-box span{font:700 18px 'Space Grotesk';color:var(--pink)}
 
-/* Rolador de itens estilo CSGORoll/CSGOEmpire */
 .case-roller-container{position:relative;height:150px;background:#0d0814;border:2px solid var(--line);border-radius:12px;overflow:hidden;display:flex;align-items:center}
 .case-roller-container::before{content:"";position:absolute;top:0;bottom:0;left:50%;transform:translateX(-50%);width:4px;background:var(--pink);z-index:10;box-shadow:0 0 12px var(--pink)}
 .case-roller-track{display:flex;gap:12px;position:absolute;left:0;will-change:transform}
@@ -74,7 +72,6 @@ section{padding:54px 0}.sectionhead{display:flex;justify-content:space-between;a
 .item-pink{border-bottom-color:var(--rarity-pink)!important;background:linear-gradient(180deg,#171122,#331016)}
 .item-gold{border-bottom-color:var(--rarity-gold)!important;background:linear-gradient(180deg,#171122,#332a10)}
 
-/* Inventário & Pool de itens da caixa */
 .pool-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:10px;max-height:220px;overflow-y:auto;padding-right:4px}
 .pool-item{background:#0d0814;border:1px solid var(--line);border-radius:10px;padding:10px;text-align:center;position:relative}
 .pool-item img{width:65px;height:45px;object-fit:contain}
@@ -82,7 +79,6 @@ section{padding:54px 0}.sectionhead{display:flex;justify-content:space-between;a
 .pool-item small{display:block;font-size:9px;color:var(--muted)}
 .badge-odds{position:absolute;top:4px;right:6px;font-size:9px;font-weight:800;color:var(--pink)}
 
-/* Tabela de Ranking da Comunidade */
 .leaderboard-list{display:flex;flex-direction:column;gap:8px;max-height:280px;overflow-y:auto}
 .leaderboard-row{display:flex;align-items:center;justify-content:space-between;background:#0d0814;border:1px solid #ffffff0d;border-radius:9px;padding:10px 14px;font-size:13px}
 .leaderboard-row.me{border-color:var(--orange2);background:#1a1024}
@@ -97,7 +93,7 @@ footer{border-top:1px solid var(--line);padding:27px 0;color:var(--muted);font-s
 </style></head>
 <body>
 <canvas id="cs2Canvas"></canvas>
-<header><div class="wrap nav"><a class="logo" href="#">DIDI<span>CS</span></a><nav class="links"><a href="#redes">Redes</a><a href="#codigos">Códigos</a><a href="#caixas">Caixas Diárias</a><a href="#giveaway">Giveaways</a><a href="#skins">CS2</a></nav><div class="navright"><span class="pill" id="userHeaderTag">JOGADOR #1337</span></div></div></header>
+<header><div class="wrap nav"><a class="logo" href="#">DIDI<span>CS</span></a><nav class="links"><a href="#redes">Redes</a><a href="#codigos">Códigos</a><a href="#caixas">Caixas Diárias</a><a href="#giveaway">Giveaways</a><a href="#skins">CS2</a></nav><div class="navright"><span class="pill" id="userHeaderTag">JOGADOR</span></div></div></header>
 <main class="wrap">
 <div id="editor">
  <div class="sectionhead"><div><div class="eyebrow">PAINEL SIMPLES</div><h2>Personalizar o DIDICS</h2><p>Altera os links e códigos aqui, sem mexer no código do site.</p></div><button class="btn ghost" onclick="toggleEditor()">Fechar</button></div>
@@ -126,7 +122,6 @@ footer{border-top:1px solid var(--line);padding:27px 0;color:var(--muted);font-s
 
 <section id="codigos"><div class="sectionhead"><div><div class="eyebrow">APOIA O MEU CONTEÚDO</div><h2>Os meus códigos</h2></div><p>Usa os códigos nos sites indicados. Obrigado pelo teu apoio!</p></div><div class="codes" id="codeCards"></div></section>
 
-<!-- --- SEÇÃO DE CAIXAS DIÁRIAS E RANKING --- -->
 <section id="caixas">
   <div class="sectionhead">
     <div>
@@ -137,7 +132,6 @@ footer{border-top:1px solid var(--line);padding:27px 0;color:var(--muted);font-s
   </div>
 
   <div class="case-hub">
-    <!-- Coluna Principal (Caixa & Roller) -->
     <div class="case-main">
       <div class="case-banner">
         <div style="display:flex; align-items:center; gap:16px;">
@@ -154,11 +148,8 @@ footer{border-top:1px solid var(--line);padding:27px 0;color:var(--muted);font-s
         </div>
       </div>
 
-      <!-- Roller Visual de Abertura -->
       <div class="case-roller-container" id="rollerContainer">
-        <div class="case-roller-track" id="rollerTrack">
-          <!-- Gerado por JS -->
-        </div>
+        <div class="case-roller-track" id="rollerTrack"></div>
       </div>
 
       <div style="display:flex; gap:12px; align-items:center; justify-content:space-between; flex-wrap:wrap;">
@@ -168,29 +159,23 @@ footer{border-top:1px solid var(--line);padding:27px 0;color:var(--muted);font-s
         <button class="btn" id="openCaseBtn" onclick="openDailyCase()" style="min-width:180px;">Abrir Caixa Grátis</button>
       </div>
 
-      <!-- Conteúdo da Caixa & Probabilidades -->
       <div>
         <h4 style="font:600 16px 'Space Grotesk'; margin:0 0 10px;">Itens possíveis nesta caixa & Probabilidades</h4>
-        <div class="pool-grid" id="poolGrid">
-          <!-- Preenchido via JS -->
-        </div>
+        <div class="pool-grid" id="poolGrid"></div>
       </div>
     </div>
 
-    <!-- Coluna Lateral (Ranking & Perfil Único) -->
     <div class="case-sidebar">
       <div>
         <h3 style="font:600 18px 'Space Grotesk'; margin:0 0 4px;">🏆 Ranking da Comunidade</h3>
-        <p class="muted" style="font-size:12px; margin:0 0 14px;">Quem acumulou mais pontos com os drops.</p>
+        <p class="muted" style="font-size:12px; margin:0 0 14px;">Jogadores ativos que fizeram login no dispositivo.</p>
       </div>
-      <div class="leaderboard-list" id="leaderboardList">
-        <!-- Preenchido via JS -->
-      </div>
+      <div class="leaderboard-list" id="leaderboardList"></div>
       <div style="background:#0d0814; border:1px solid var(--line); border-radius:12px; padding:14px; margin-top:auto;">
-        <span style="font-size:11px; color:var(--pink); font-weight:800; display:block; margin-bottom:4px;">O TEU PERFIL (ID ÚNICO)</span>
+        <span style="font-size:11px; color:var(--pink); font-weight:800; display:block; margin-bottom:4px;">O TEU PERFIL (LOGIN ÚNICO)</span>
         <div style="display:flex; justify-content:space-between; align-items:center;">
-          <input type="text" id="myUsername" class="field" style="margin:0; font-size:13px;" placeholder="O teu nick" maxlength="16">
-          <button class="btn ghost" onclick="saveMyUsername()" style="padding:10px 12px; margin-left:8px; font-size:11px;">Salvar</button>
+          <input type="text" id="myUsername" class="field" style="margin:0; font-size:13px;" placeholder="Insere o teu nick" maxlength="16">
+          <button class="btn ghost" onclick="saveMyUsername()" style="padding:10px 12px; margin-left:8px; font-size:11px;">Entrar</button>
         </div>
         <small class="muted" style="display:block; margin-top:6px; font-size:10px;">ID seguro gerado para este dispositivo (evita spam).</small>
       </div>
@@ -242,7 +227,6 @@ footer{border-top:1px solid var(--line);padding:27px 0;color:var(--muted);font-s
 <footer><div class="wrap foot"><span>© <span id="year"></span> DIDICS. Feito para a comunidade por morais.</span><span>Não afiliado à Valve ou à Steam.</span></div></footer><div class="toast" id="toast">Copiado!</div>
 
 <script>
-// --- AMBIENTE VISUAL CS2 ---
 const cs2Canvas = document.getElementById("cs2Canvas");
 const ctxCS = cs2Canvas.getContext("2d");
 let smokes = [];
@@ -257,10 +241,7 @@ window.addEventListener("resize", resizeCS2);
 resizeCS2();
 
 function initCS2Bg() {
-  smokes = [];
-  embers = [];
-  crosshairs = [];
-
+  smokes = []; embers = []; crosshairs = [];
   for (let i = 0; i < 6; i++) {
     smokes.push({
       x: Math.random() * cs2Canvas.width,
@@ -271,7 +252,6 @@ function initCS2Bg() {
       color: i % 2 === 0 ? "rgba(184, 62, 200, 0.08)" : "rgba(255, 102, 204, 0.06)"
     });
   }
-
   const emberCount = Math.min(35, Math.floor(window.innerWidth / 32));
   for (let i = 0; i < emberCount; i++) {
     embers.push({
@@ -284,7 +264,6 @@ function initCS2Bg() {
       pink: Math.random() > 0.45
     });
   }
-
   for (let i = 0; i < 5; i++) {
     crosshairs.push({
       x: Math.random() * cs2Canvas.width,
@@ -304,9 +283,7 @@ function drawCS2Bg() {
     grad.addColorStop(0, s.color);
     grad.addColorStop(1, "rgba(13, 8, 20, 0)");
     ctxCS.fillStyle = grad;
-    ctxCS.beginPath();
-    ctxCS.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
-    ctxCS.fill();
+    ctxCS.beginPath(); ctxCS.arc(s.x, s.y, s.radius, 0, Math.PI * 2); ctxCS.fill();
     s.x += s.vx; s.y += s.vy;
     if (s.x < -s.radius) s.x = cs2Canvas.width + s.radius;
     if (s.x > cs2Canvas.width + s.radius) s.x = -s.radius;
@@ -324,8 +301,7 @@ function drawCS2Bg() {
     ctxCS.moveTo(c.x + gap, c.y); ctxCS.lineTo(c.x + c.size, c.y);
     ctxCS.moveTo(c.x, c.y - c.size); ctxCS.lineTo(c.x, c.y - gap);
     ctxCS.moveTo(c.x, c.y + gap); ctxCS.lineTo(c.x, c.y + c.size);
-    ctxCS.stroke();
-    ctxCS.restore();
+    ctxCS.stroke(); ctxCS.restore();
     c.x += c.driftX; c.y += c.driftY;
     if (c.x < -20) c.x = cs2Canvas.width + 20;
     if (c.x > cs2Canvas.width + 20) c.x = -20;
@@ -349,7 +325,6 @@ function drawCS2Bg() {
 initCS2Bg();
 drawCS2Bg();
 
-// --- CONFIGURAÇÕES DO SITE ---
 const defaults={discord:"https://discord.gg/MF6FjUkbTQ",tiktok:"https://www.tiktok.com/@dioguinho_0_0",youtube:"https://www.youtube.com/@DidiCS2-M4",title:"Uma comunidade. Uma vibe.",sites:[["CSGOSKINS","DIDICS"],["SkinClub","DIDICS210"],["Site parceiro 3","CODIGO3"]]};
 let settings={...defaults};
 function load(){try{const s=JSON.parse(localStorage.getItem("didicsSettings")||"null");if(s)settings={...defaults,...s,sites:s.sites||defaults.sites}}catch(e){};document.getElementById("discordLink").href=settings.discord;document.getElementById("tiktokLink").href=settings.tiktok;document.getElementById("youtubeLink").href=settings.youtube;document.getElementById("heroText").textContent=settings.title||defaults.title;renderCodes();fillEditor();drawWheel(getNames())}
@@ -361,7 +336,6 @@ function saveSettings(){settings={discord:eDiscord.value||"#",tiktok:eTikTok.val
 function notify(t){const x=document.getElementById("toast");x.textContent=t;x.classList.add("show");setTimeout(()=>x.classList.remove("show"),1800)}
 function copyCode(t){navigator.clipboard?.writeText(t).then(()=>notify("Código copiado!")).catch(()=>notify("Código: "+t))}
 
-// --- SISTEMA DE CAIXAS DIÁRIAS & RANKING (DISPOSITIVO ÚNICO) ---
 const CASE_ITEMS = [
   { id: 1, name: "P250 | Sand Dune", rarity: "blue", class: "item-blue", points: 10, odds: "50.0%", img: "https://community.cloudflare.steamstatic.com/economy/image/class/730/p250_sand_dune" },
   { id: 2, name: "MAC-10 | Urban DDPAT", rarity: "blue", class: "item-blue", points: 15, odds: "25.0%", img: "https://community.cloudflare.steamstatic.com/economy/image/class/730/mac10_urban" },
@@ -376,15 +350,19 @@ let deviceData = JSON.parse(localStorage.getItem("didicsDevice") || "null");
 if (!deviceData) {
   deviceData = {
     uid: "user_" + Math.random().toString(36).substring(2, 9),
-    username: "Jogador_" + Math.floor(Math.random() * 9000 + 1000),
+    username: "",
     lastOpen: 0,
     points: 0
   };
   localStorage.setItem("didicsDevice", JSON.stringify(deviceData));
 }
 
-document.getElementById("myUsername").value = deviceData.username;
-document.getElementById("userHeaderTag").textContent = deviceData.username.toUpperCase();
+if (deviceData.username) {
+  document.getElementById("myUsername").value = deviceData.username;
+  document.getElementById("userHeaderTag").textContent = deviceData.username.toUpperCase();
+} else {
+  document.getElementById("userHeaderTag").textContent = "NÃO LOGADO";
+}
 
 function saveMyUsername() {
   const newName = document.getElementById("myUsername").value.trim();
@@ -393,10 +371,9 @@ function saveMyUsername() {
   localStorage.setItem("didicsDevice", JSON.stringify(deviceData));
   document.getElementById("userHeaderTag").textContent = newName.toUpperCase();
   updateLeaderboardData();
-  notify("Nome de perfil guardado!");
+  notify("Login efetuado com sucesso!");
 }
 
-// Renderizar Pool de Itens na Interface
 function renderPoolGrid() {
   document.getElementById("poolGrid").innerHTML = CASE_ITEMS.map(i => `
     <div class="pool-item ${i.class}">
@@ -409,25 +386,20 @@ function renderPoolGrid() {
 }
 renderPoolGrid();
 
-// Gerador de mock leaderboard combinando o jogador local + tops da comunidade
+// Ranking dinâmico apenas com quem faz login (guardado no localStorage global da comu/dispositivo)
 function getLeaderboard() {
-  let board = JSON.parse(localStorage.getItem("didicsLeaderboard") || "null");
-  if (!board) {
-    board = [
-      { name: "Dioguinho", points: 14500 },
-      { name: "MoraisCS", points: 9800 },
-      { name: "xFire_pt", points: 6200 },
-      { name: "SnipersPro", points: 4100 },
-      { name: "NoxPlayer", points: 2800 }
-    ];
+  let board = JSON.parse(localStorage.getItem("didicsLeaderboard") || "[]");
+  
+  if (deviceData.username) {
+    let found = board.find(x => x.uid === deviceData.uid);
+    if (found) {
+      found.name = deviceData.username;
+      found.points = deviceData.points;
+    } else {
+      board.push({ uid: deviceData.uid, name: deviceData.username, points: deviceData.points });
+    }
   }
-  // Garantir que o utilizador atual está no ranking
-  let found = board.find(x => x.name === deviceData.username);
-  if (found) {
-    found.points = deviceData.points;
-  } else {
-    board.push({ name: deviceData.username, points: deviceData.points });
-  }
+  
   board.sort((a, b) => b.points - a.points);
   localStorage.setItem("didicsLeaderboard", JSON.stringify(board));
   return board;
@@ -435,23 +407,36 @@ function getLeaderboard() {
 
 function updateLeaderboardData() {
   const board = getLeaderboard();
-  document.getElementById("leaderboardList").innerHTML = board.slice(0, 6).map((p, idx) => `
-    <div class="leaderboard-row ${p.name === deviceData.username ? 'me' : ''}">
+  const listEl = document.getElementById("leaderboardList");
+
+  if (board.length === 0) {
+    listEl.innerHTML = `<div style="text-align:center; color:var(--muted); font-size:12px; padding:15px;">Ainda nenhum jogador fez login ou abriu caixas. Sê o primeiro!</div>`;
+    return;
+  }
+
+  listEl.innerHTML = board.slice(0, 10).map((p, idx) => `
+    <div class="leaderboard-row ${p.uid === deviceData.uid ? 'me' : ''}">
       <span class="leaderboard-rank">#${idx+1}</span>
-      <span class="leaderboard-name">${esc(p.name)} ${p.name === deviceData.username ? '(Tu)' : ''}</span>
+      <span class="leaderboard-name">${esc(p.name)} ${p.uid === deviceData.uid ? '(Tu)' : ''}</span>
       <span class="leaderboard-score">${p.points} pts</span>
     </div>
   `).join("");
 }
 updateLeaderboardData();
 
-// Verificação de Temporizador de 24h
-const COOLDOWN_TIME = 24 * 60 * 60 * 1000; // 24 horas em ms
+const COOLDOWN_TIME = 24 * 60 * 60 * 1000;
 function checkCaseTimer() {
   const now = Date.now();
   const elapsed = now - deviceData.lastOpen;
   const btn = document.getElementById("openCaseBtn");
   const timerDisplay = document.getElementById("countdownDisplay");
+
+  if (!deviceData.username) {
+    timerDisplay.textContent = "FAZ LOGIN PRIMEIRO";
+    btn.disabled = true;
+    btn.textContent = "Login Necessário";
+    return;
+  }
 
   if (elapsed < COOLDOWN_TIME) {
     const remaining = COOLDOWN_TIME - elapsed;
@@ -471,11 +456,9 @@ function checkCaseTimer() {
 setInterval(checkCaseTimer, 1000);
 checkCaseTimer();
 
-// Construir Pista do Roller Inicial
 function buildRollerTrack(winningItem) {
   const track = document.getElementById("rollerTrack");
   let html = "";
-  // Gerar 40 itens falsos antes do vencedor e alguns depois para fluidez
   for (let i = 0; i < 45; i++) {
     const randItem = CASE_ITEMS[Math.floor(Math.random() * CASE_ITEMS.length)];
     html += `
@@ -486,7 +469,6 @@ function buildRollerTrack(winningItem) {
       </div>
     `;
     if (i === 38) {
-      // Inserir o verdadeiro vencedor na posição 38
       html += `
         <div class="case-item-card ${winningItem.class}" id="winningCard">
           <small>${winningItem.rarity.toUpperCase()}</small>
@@ -502,11 +484,9 @@ function buildRollerTrack(winningItem) {
 }
 buildRollerTrack(CASE_ITEMS[0]);
 
-// Sorteio com base em percentagens reais
 function rollItem() {
   const rand = Math.random() * 100;
   let cumulative = 0;
-  // Pesos baseados nas odds da caixa
   const weights = [50.0, 25.0, 15.0, 7.5, 2.3, 0.2];
   for (let i = 0; i < CASE_ITEMS.length; i++) {
     cumulative += weights[i];
@@ -516,6 +496,11 @@ function rollItem() {
 }
 
 function openDailyCase() {
+  if (!deviceData.username) {
+    notify("Tens de fazer login com o teu nick primeiro!");
+    return;
+  }
+
   const now = Date.now();
   if (now - deviceData.lastOpen < COOLDOWN_TIME) {
     notify("Ainda estás em cooldown de 24h!");
@@ -529,12 +514,8 @@ function openDailyCase() {
   buildRollerTrack(wonItem);
 
   const track = document.getElementById("rollerTrack");
-  // Forçar reflow
   track.getBoundingClientRect();
 
-  // Calcular deslocamento exato para o item vencedor (index 38)
-  // Cada cartão tem 130px de largura + 12px de gap = 142px
-  // Centralizar com o marcador vermelho (container width ~ 1000px, metade = 500px, cartão = 130px -> offset ~ 435px por item)
   const cardWidth = 142;
   const targetIndex = 38;
   const containerWidth = document.getElementById("rollerContainer").clientWidth;
@@ -543,10 +524,7 @@ function openDailyCase() {
   track.style.transition = "transform 4.5s cubic-bezier(0.08, 0.82, 0.12, 1)";
   track.style.transform = `translateX(-${offsetTarget}px)`;
 
-  // Som de clique / abertura
-  try {
-    initAudio();
-  } catch(e){}
+  try { initAudio(); } catch(e){}
 
   setTimeout(() => {
     deviceData.lastOpen = Date.now();
@@ -561,7 +539,6 @@ function openDailyCase() {
   }, 4700);
 }
 
-// --- ROLETA DE GIVEAWAYS ---
 const names=document.getElementById("names");
 function getNames(){return names.value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean)}
 names.addEventListener("input",()=>{const n=getNames();document.getElementById("count").textContent=n.length+" participantes";drawWheel(n)});
@@ -603,7 +580,6 @@ function drawWheel(list){
   });
 }
 
-// ÁUDIO WEB API
 let audioCtx = null;
 function initAudio() {
   if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
